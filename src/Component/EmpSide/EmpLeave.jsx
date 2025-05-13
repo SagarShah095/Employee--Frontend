@@ -10,7 +10,7 @@ import { Loader } from "lucide-react";
 const EmpLeave = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const URL = "https://employee-backend-q7hn.onrender.com";
+  const URL = "http://localhost:5000";
 
   const [data, setData] = useState([]);
 
@@ -33,11 +33,11 @@ const EmpLeave = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   console.log(data, "data in leave");
 
-  const userData = data.filter((item) => item.empId === user.emp_id);
+  const userData = data.filter((item) => item.empId === user?.emp_id);
 
   // console.log(userData, "userData in leave");
 

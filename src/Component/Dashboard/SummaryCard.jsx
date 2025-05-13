@@ -20,7 +20,7 @@ const fetchCount = async () => {
   }
 
   try {
-    const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/employee/count", {
+    const response = await axios.get("http://localhost:5000/api/employee/count", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -5,7 +5,7 @@ import { useAuth } from "../Context/authContext";
 import Loader from "../Component/Loader";
 
 const Login = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

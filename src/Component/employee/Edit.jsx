@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const Edit = () => {
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   const [loading, setLoading] = useState(false);
 

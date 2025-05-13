@@ -9,7 +9,7 @@ const Add = ({ addEmp, setAddEmp }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   const navigate = useNavigate();
 

@@ -7,26 +7,42 @@ import { Loader } from "lucide-react";
 
 const LeaveAdd = () => {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [empData, setEmpData] = useState(null); // ✅ Actual fetched employee data
   const [leave, setLeave] = useState({
-    emp_id: user?.emp_id || "",
-    emp_name: user?.emp_name || "",
+    emp_id: "",
+    emp_name: "",
     leavetype: "",
     fromDate: "",
     toDate: "",
   });
-
   const [redAlert, setRedAlert] = useState(false);
 
-  // Ensure leave state updates when user data becomes available
+  // ✅ Fetch user-specific data from API on mount
   useEffect(() => {
-    if (user?.emp_id && user?.emp_name) {
-      setLeave((prev) => ({
-        ...prev,
-        emp_id: user.emp_id,
-        emp_name: user.emp_name,
-      }));
-    }
+    const fetchEmpData = async () => {
+      if (!user?._id) return;
+      setLoading(true);
+      try {
+        const res = await axios.get(`http://localhost:5000/api/employee/${user?._id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        if (res.data.success) {
+          const emp = res.data.emp?.find((e) => e.email === user.email);
+          setEmpData(emp);
+          setLeave((prev) => ({
+            ...prev,
+            emp_id: emp?.emp_id || "",
+            emp_name: emp?.emp_name || "",
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchEmpData();
   }, [user]);
 
   const handleChange = (e) => {
@@ -39,17 +55,16 @@ const LeaveAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (leave.toDate < leave.fromDate) {
       setRedAlert(true);
       return;
     } else {
       setRedAlert(false);
     }
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await axios.post(
-        "https://employee-backend-q7hn.onrender.com/api/leave/add",
+        "http://localhost:5000/api/leave/add",
         leave,
         {
           headers: {
@@ -57,38 +72,33 @@ const LeaveAdd = () => {
           },
         }
       );
-
       if (response?.data?.success) {
         alert("Leave applied successfully!");
         setLeave({
-          emp_id: user.emp_id,
-          emp_name: user.emp_name,
+          emp_id: empData?.emp_id,
+          emp_name: empData?.emp_name,
           leavetype: "",
           fromDate: "",
           toDate: "",
         });
       } else {
-        alert("Leave applied Error!");
+        alert("Leave application error!");
       }
-      setLoading(false)
     } catch (error) {
       console.error("Error applying leave:", error);
       alert("Something went wrong while applying leave!");
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
       {loading && <Loader />}
       <Navbar />
-
       <div className="flex flex-1 overflow-hidden">
         <EmployeeSidebar />
-
         <div className="w-full bg-gray-100 min-h-screen p-8">
           <h1 className="text-xl font-semibold text-center mb-6">Apply Leaves</h1>
-
           <form
             onSubmit={handleSubmit}
             className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mx-auto"
@@ -99,7 +109,7 @@ const LeaveAdd = () => {
               </label>
               <input
                 type="text"
-                value={user.emp_id}
+                value={user?.emp_id}
                 readOnly
                 className="shadow appearance-none border bg-gray-100 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -111,7 +121,7 @@ const LeaveAdd = () => {
               </label>
               <input
                 type="text"
-                value={user.emp_name}
+                value={user?.emp_name}
                 readOnly
                 className="shadow appearance-none border bg-gray-100 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
