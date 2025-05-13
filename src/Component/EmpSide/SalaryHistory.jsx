@@ -41,7 +41,7 @@ const SalaryHistory = () => {
 
   // ✅ Correct Filter only user's department and emp_name match
   const filteredData = salaryHistory.filter(
-    (data) => data.mainEmpId === user.emp_id
+    (data) => data.mainEmpId === user?.emp_id
   );
 
   console.log("Filtered Salary Data for User Dept & Name:", filteredData);
