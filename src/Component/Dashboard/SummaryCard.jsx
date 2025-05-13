@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaBuilding, FaMoneyBillWave } from "react-icons/fa";
 import { IoIosPaper } from "react-icons/io";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -6,6 +7,45 @@ import { MdOutlineTimer } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 
 const SummaryCard = ({ icon, text, number }) => {
+  const [count, setCount] = useState(0);
+
+  console.log("Count:", count);
+
+const fetchCount = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("Token not found, skipping API call");
+    setCount(0);  // Optional fallback state
+    return;
+  }
+
+  try {
+    const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/employee/count", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      setCount(response.data.count);
+    } else {
+      console.error("Count fetch failed:", response.data.message);
+      // Optionally set count to 0 or show fallback UI
+    }
+  } catch (error) {
+    console.error("Error fetching count:", error);
+    // Don't redirect here, show error message
+  }
+};
+
+
+  
+
+  useEffect(() => {
+  fetchCount();
+}, []);
+
+
   return (
     <div>
       <div className="flex justify-between items-center gap-4 p-4 bg-gray-100 rounded-lg mb-4">
@@ -15,7 +55,7 @@ const SummaryCard = ({ icon, text, number }) => {
           </div>
           <div className="pl-4 py-1">
             <p className="text-lg font-semibold">{text}</p>
-            <p className="text-xl font-bold">{number}</p>
+            <p className="text-xl font-bold">{count}</p>
           </div>
         </div>
         <div className="rounded flex w-full bg-white">

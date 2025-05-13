@@ -57,34 +57,6 @@ const Add = ({ addEmp, setAddEmp }) => {
     setLoading(false);
   };
 
-  const fetchEmployee = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${url}/api/employee/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.data.success) {
-        setData(response?.data);
-        console.log(response?.data?.Emp, "response____data");
-      }
-      setLoading(false);
-    } catch (error) {
-      if (error.response && !error.response.data.success) {
-        console.log(
-          error.response.data.error || "Error fetching employee data"
-        );
-      }
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchEmployee();
-  }, []);
-
-  console.log(data, "Employee data");
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;

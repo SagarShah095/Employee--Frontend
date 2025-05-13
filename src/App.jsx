@@ -6,7 +6,7 @@ import RouterRoutes from "./utils/RouterRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./Component/Dashboard/AdminSummary";
 import DepartmentList from "./Component/Deparment/DepartmentList";
-import EmployeeDashboard from "./Component/Dashboard/EmployeeDashboard";
+import EmployeeDashboard from "./Component/EmpSide/EmployeeDashboard";
 import AdminSidebar from "./Component/Dashboard/AdminSidebar";
 import AddDipartment from "./Component/Deparment/AddDipartment";
 import EditDepartment from "./Component/Deparment/EditDepartment";
@@ -19,6 +19,11 @@ import SalaryView from "./Component/employee/SalaryView";
 import LeaveAdd from "./Component/Leaves/LeaveAdd";
 import LeaveView from './Component/Leaves/LeaveView';
 import LeaveDetails from "./Component/Leaves/LeaveDetails";
+import EmpProfile from "./Component/EmpSide/EmpProfile";
+import EmpChangePass from "./Component/EmpSide/EmpChangePass";
+import EmpLeave from "./Component/EmpSide/EmpLeave";
+import EmpLeaveApply from "./Component/EmpSide/EmpLeaveApply";
+import SalaryHistory from "./Component/EmpSide/SalaryHistory";
 
 function App() {
   const [department, setDepartment] = useState([]);
@@ -104,6 +109,13 @@ function App() {
         />
         
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+        <Route path="/employee/profile" element={<EmpProfile />} />
+        <Route path="/employee/change-password" element={<EmpChangePass />} />
+        <Route path="/employee/leave-history" element={<EmpLeave />} />
+        <Route path="/employee/apply-leave" element={<EmpLeaveApply />} />
+        <Route path="/employee/salary-history" element={<SalaryHistory />} />
+
+
       </Routes>
     </BrowserRouter>
   );

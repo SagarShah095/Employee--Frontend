@@ -45,13 +45,13 @@ const AddSalary = () => {
           setEdit((prev) => ({
             ...prev,
             empId: response.data.emp._id,
-            emp_name: response.data.emp.emp_name,
+            emp_name: response.data.emp._id, // Use employee _id
             Mrd: response.data.emp.Mrd || "",
             Des: response.data.emp.Des || "",
             Dept: response.data.emp.Dept || "",
           }));
+          setSelectedEmp(response.data.emp); // ✅ Set selected employee
         }
-        setLoading(false);
       } catch (error) {
         if (error.response && !error.response.data.success) {
           console.log(
@@ -100,91 +100,73 @@ const AddSalary = () => {
     setEdit((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const totalSalary =
-      parseFloat(edit.Salary) +
-      parseFloat(edit.allowances) -
-      parseFloat(edit.deductions);
-    
-    setLoading(true);
-    try {
-      // Step 1: Check if salary data already exists for selected employee
-      const checkResponse = await axios.get(
-        `${url}/api/salary/employee/${selectedEmp._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-  
-      // Check match by name
-      if (
-        checkResponse.data.success &&
-        checkResponse.data.data &&
-        checkResponse.data.data.empId.emp_name === selectedEmp.emp_name
-      ) {
-        // Update existing salary
-        const updateResponse = await axios.put(
-          `${url}/api/salary/update/${selectedEmp._id}`, // assume you have this route
-          {
-            basicSalary: parseFloat(edit.Salary),
-            allowances: parseFloat(edit.allowances),
-            deductions: parseFloat(edit.deductions),
-            netSalary: totalSalary,
-            payDate: edit.payDate,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-  
-        if (updateResponse.data.success) {
-          navigate("/admin-dashboard/employees");
-        } else {
-          console.log("Failed to update salary");
-        }
-      } else {
-        // Add new salary
-        const addResponse = await axios.post(
-          `${url}/api/salary/add`,
-          {
-            empId: selectedEmp._id,
-            basicSalary: parseFloat(edit.Salary),
-            allowances: parseFloat(edit.allowances),
-            deductions: parseFloat(edit.deductions),
-            netSalary: totalSalary,
-            payDate: edit.payDate,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-  
-        if (addResponse.data.success) {
-          navigate("/admin-dashboard/employees");
-        } else {
-          console.log("Failed to add salary");
-        }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!selectedEmp || !selectedEmp._id) {
+    console.log("No employee selected");
+    return;
+  }
+
+  if (
+    !edit.Salary ||
+    !edit.allowances ||
+    !edit.deductions ||
+    !edit.payDate ||
+    isNaN(edit.Salary) ||
+    isNaN(edit.allowances) ||
+    isNaN(edit.deductions)
+  ) {
+    alert("Please fill all fields correctly");
+    return;
+  }
+
+  const totalSalary =
+    parseFloat(edit.Salary) +
+    parseFloat(edit.allowances) -
+    parseFloat(edit.deductions);
+
+  setLoading(true);
+  try {
+    console.log("Submitting salary data...");
+    const addResponse = await axios.post(
+      `${url}/api/salary/add`,
+      {
+        empId: selectedEmp._id,
+        mainEmpId: selectedEmp.emp_id,
+        dept: selectedEmp.Dept,
+        emp_name: selectedEmp.emp_name,
+        basicSalary: parseFloat(edit.Salary),
+        allowances: parseFloat(edit.allowances),
+        deductions: parseFloat(edit.deductions),
+        netSalary: totalSalary,
+        payDate: edit.payDate,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error occurred in AddSalary:", error);
-      if (error.response) {
-        console.log(error.response.data.error || "Error processing salary");
-      } else {
-        console.log("An error occurred");
-      }
+    );
+
+    if (addResponse.data.success) {
+      navigate("/admin-dashboard/employees");
+    } else {
+      console.log("Failed to add salary:", addResponse.data.error);
+      alert(addResponse.data.error || "Failed to add salary");
     }
-    setLoading(false);
-  };
-  
+  } catch (error) {
+    console.error("Error occurred in AddSalary:", error);
+    if (error.response) {
+      console.log(error.response.data.error || "Error processing salary");
+      alert(error.response.data.error || "Error processing salary");
+    } else {
+      console.log("An error occurred");
+    }
+  }
+  setLoading(false);
+};
+
 
   return (
     <div>

@@ -18,26 +18,52 @@ const AuthProvider = ({ children }) => {
     const verifyUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(localStorage.getItem("token"), "token in auth context");
+        console.log("Stored token:", token);
 
-        if (token) {
-          const response = await axios.get(`${url}/api/auth/verify`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          console.log(response.data, "response from verify user");
-
-          if (response.data.success) {
-            setUser(response.data.user);
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-          }
-        } else {
+        if (!token) {
+          console.log("No token found");
           setUser(null);
-          setLoading(false);
+          return;
+        }
+
+        const userFromStorage = JSON.parse(localStorage.getItem("user"));
+        const role = userFromStorage?.role;
+        const userId = userFromStorage?._id;
+
+        if (!role || !userId) {
+          console.log("User or role missing in localStorage");
+          setUser(null);
+          return;
+        }
+
+        let endpoint = "";
+        if (role === "admin") {
+          endpoint = `${url}/api/auth/verify`;
+        } else if (role === "employee") {
+          endpoint = `${url}/api/employee/verify/${userId}`;
+        } else {
+          console.log("Unknown role");
+          setUser(null);
+          return;
+        }
+
+        console.log("Verifying via:", endpoint);
+
+        const response = await axios.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data.success) {
+          setUser(response.data.user);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        } else {
+          console.log("Verification failed from server");
+          setUser(null);
         }
       } catch (error) {
+        console.log("Verify user error:", error.response?.data || error.message);
         setUser(null);
       } finally {
         setLoading(false);
@@ -56,7 +82,6 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    1;
   };
 
   return (
