@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 
 const EmpChangePass = () => {
   const { user } = useAuth();
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [selectedEmp, setSelectedEmp] = useState([]);
   const [loading, setLoading] = useState(false);

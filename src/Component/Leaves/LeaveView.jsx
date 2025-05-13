@@ -12,7 +12,7 @@ const LeaveView = () => {
   useEffect(() => {
     const fetchLeaveData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/leave/", {
+        const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/leave/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -47,7 +47,7 @@ const LeaveView = () => {
     console.log("Approving leave ID:", id);
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/leave/${id}`,
+        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
         { status: "Approved" },
         {
           headers: {
@@ -74,7 +74,7 @@ const LeaveView = () => {
   const handleReject = async (id) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/leave/${id}`,
+        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
         { status: "Rejected" },
         {
           headers: {

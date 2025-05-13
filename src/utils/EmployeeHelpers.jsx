@@ -1,6 +1,6 @@
 export const fetchDepartments = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/api/department", {
+    const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/department", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

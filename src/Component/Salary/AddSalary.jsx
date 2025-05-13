@@ -6,7 +6,7 @@ import axios from "axios";
 import Loader from "../Loader";
 
 const AddSalary = () => {
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const { id } = useParams();
   const navigate = useNavigate();

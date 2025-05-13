@@ -9,7 +9,7 @@ const List = () => {
 
   const {id} = useParams();
 
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [empData, setEmpData] = useState([]);
   const [loading, setLoading] = useState(false);

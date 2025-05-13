@@ -6,7 +6,7 @@ import axios from "axios";
 import Loader from "../Loader";
 
 const AddDipartment = () => {
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [loading, setLoading] = useState(false);
 
