@@ -1,17 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Dashboard/Navbar";
 import AdminSidebar from "../Dashboard/AdminSidebar";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 const LeaveDetails = () => {
   const [leaveData, setLeaveData] = React.useState([]);
+  const [loading, setLoading] = useState(false)
 
   const { id } = useParams();
 
   console.log("Leave Data:", leaveData);
 
   const fetchdata = async () => {
+    setLoading(true)
     try {
       const response = await axios.get(
         `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
@@ -26,9 +29,13 @@ const LeaveDetails = () => {
       } else {
         alert("Failed to fetch leave data. Please try again.");
       }
+    setLoading(false)
+
     } catch (error) {
       console.error("Error fetching leave data:", error);
     }
+    setLoading(false)
+
   };
 
   useEffect(() => {
@@ -37,6 +44,7 @@ const LeaveDetails = () => {
 
   return (
     <div>
+      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">

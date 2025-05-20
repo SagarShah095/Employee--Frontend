@@ -32,7 +32,7 @@ export const DepartmentBtns = ({ _id, department, setDepartment }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        } 
       );
 
       if (response.data.success) {

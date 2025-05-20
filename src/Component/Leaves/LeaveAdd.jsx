@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Dashboard/Navbar";
 import AdminSidebar from "../Dashboard/AdminSidebar";
 import axios from "axios";
+import { Loader } from "lucide-react";
 
 const LeaveAdd = () => {
   const [leave, setLeave] = React.useState({
@@ -99,6 +100,7 @@ const LeaveAdd = () => {
 
   return (
     <div>
+      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">

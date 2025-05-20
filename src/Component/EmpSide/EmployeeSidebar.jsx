@@ -33,12 +33,12 @@ const EmployeeSidebar = () => {
     <div className="flex">
       <aside className="w-64 min-h-screen bg-white border-r p-6 shadow-lg">
         <nav className="space-y-2">
-          {/* <SidebarItem
+          <SidebarItem
             to="/employee-dashboard"
             icon={<LayoutDashboard />}
             label="Dashboard"
             end
-          /> */}
+          />
           <SidebarItem to="/employee/profile" icon={<User />} label="Profile" />
           {/* <SidebarItem
             to="/employee/attendance"

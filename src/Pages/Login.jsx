@@ -56,7 +56,7 @@ const Login = () => {
         login(user);
         localStorage.setItem("token", empRes.data.token);
         localStorage.setItem("user", JSON.stringify(user));
-        navigate("/employee/profile");
+        navigate("/employee-dashboard");
       } else {
         setError("Invalid credentials or unknown role");
       }

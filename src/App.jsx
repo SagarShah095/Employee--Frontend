@@ -24,6 +24,7 @@ import EmpChangePass from "./Component/EmpSide/EmpChangePass";
 import EmpLeave from "./Component/EmpSide/EmpLeave";
 import EmpLeaveApply from "./Component/EmpSide/EmpLeaveApply";
 import SalaryHistory from "./Component/EmpSide/SalaryHistory";
+import Attendance from "./Component/Attendance/Attendance";
 
 function App() {
   const [department, setDepartment] = useState([]);
@@ -114,6 +115,8 @@ function App() {
         <Route path="/employee/leave-history" element={<EmpLeave />} />
         <Route path="/employee/apply-leave" element={<EmpLeaveApply />} />
         <Route path="/employee/salary-history" element={<SalaryHistory />} />
+        <Route path="/admin-dashboard/punch" element={<Attendance />} />
+
 
 
       </Routes>

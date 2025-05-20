@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "../Dashboard/AdminSidebar";
 import Navbar from "../Dashboard/Navbar";
 import axios from "axios";
+import { Loader } from "lucide-react";
 
 const LeaveView = () => {
   const [leaveData, setLeaveData] = useState([]);
   const [approvedLeaves, setApprovedLeaves] = useState([]);
   const [rejectedLeaves, setRejectedLeaves] = useState([]);
   const [viewType, setViewType] = useState("pending"); // "pending" | "approved" | "rejected"
+  const [loading, setLoading] =useState(false)
 
   useEffect(() => {
     const fetchLeaveData = async () => {
+      setLoading(true)
       try {
         const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/leave/", {
           headers: {
@@ -36,15 +39,21 @@ const LeaveView = () => {
         } else {
           alert("Failed to fetch leave data. Please try again.");
         }
+      setLoading(false)
+
       } catch (error) {
         console.error("Error fetching leave data:", error);
       }
+      setLoading(false)
+
     };
      fetchLeaveData();
   }, []);
 
   const handleApprove = async (id) => {
     console.log("Approving leave ID:", id);
+      setLoading(true)
+
     try {
       const res = await axios.put(
         `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
@@ -65,13 +74,18 @@ const LeaveView = () => {
       } else {
         alert("Failed to approve leave.");
       }
+      setLoading(false)
+
     } catch (error) {
       console.error("Error approving leave:", error);
       alert("Error approving leave.");
     }
+      setLoading(false)
+
   };
 
   const handleReject = async (id) => {
+      setLoading(true)
     try {
       const res = await axios.put(
         `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
@@ -91,10 +105,14 @@ const LeaveView = () => {
       } else {
         alert("Failed to reject leave.");
       }
+      setLoading(false)
+
     } catch (error) {
       console.error("Error rejecting leave:", error);
       alert("Error rejecting leave.");
     }
+      setLoading(false)
+
   };
 
   const getDataToShow = () => {
@@ -106,6 +124,7 @@ const LeaveView = () => {
 
   return (
     <div>
+      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">

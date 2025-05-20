@@ -40,56 +40,50 @@ const EmpProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
-      {loading ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <Loader className="animate-spin w-10 h-10 text-blue-500" />
-        </div>
-      ) : (
-        <>
-          <Navbar />
-          <div className="flex">
-            <EmployeeSidebar />
-            <div className="flex-1 p-6">
-              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
-                <div className="flex items-center gap-6">
-                  <img
-                    src={selectedEmp?.profileImage || "/default-profile.png"}
-                    alt="Profile"
-                    className="w-28 h-28 rounded-full object-cover border-4 border-blue-200 shadow"
-                  />
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-800">
-                      {selectedEmp?.name}
-                    </h1>
-                    <p className="text-gray-600 text-sm">{selectedEmp?.email}</p>
-                  </div>
+      {loading && <Loader />}
+        <Navbar />
+        <div className="flex">
+          <EmployeeSidebar />
+          <div className="flex-1 p-6">
+            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
+              <div className="flex items-center gap-6">
+                <img
+                  src={selectedEmp?.profileImage || "/default-profile.png"}
+                  alt="Profile"
+                  className="w-28 h-28 rounded-full object-cover border-4 border-blue-200 shadow"
+                />
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800">
+                    {selectedEmp?.name}
+                  </h1>
+                  <p className="text-gray-600 text-sm">{selectedEmp?.email}</p>
                 </div>
+              </div>
 
-                <div className="mt-8 space-y-4 text-gray-700 text-base">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                    <div>
-                      <span className="font-semibold text-gray-900">Department:</span>
-                      <p>{selectedEmp?.Dept}</p>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Designation:</span>
-                      <p>{selectedEmp?.Des}</p>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Salary:</span>
-                      <p>₹{selectedEmp?.Salary}</p>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Employee ID:</span>
-                      <p>{selectedEmp?.emp_id}</p>
-                    </div>
+              <div className="mt-8 space-y-4 text-gray-700 text-base">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                  <div>
+                    <span className="font-semibold text-gray-900">Department:</span>
+                    <p>{selectedEmp?.Dept}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900">Designation:</span>
+                    <p>{selectedEmp?.Des}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900">Salary:</span>
+                    <p>₹{selectedEmp?.Salary}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900">Employee ID:</span>
+                    <p>{selectedEmp?.emp_id}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </>
-      )}
+        </div>
+
     </div>
   );
 };

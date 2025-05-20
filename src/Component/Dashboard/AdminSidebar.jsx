@@ -31,9 +31,13 @@ const AdminSidebar = () => {
           <span>Employee</span>
         </NavLink>
 
-        <NavLink to="/admin-dashboard/departments" className={navLinkClass}>
+        {/* <NavLink to="/admin-dashboard/departments" className={navLinkClass}>
           <FaBuilding />
           <span>Department</span>
+        </NavLink> */}
+        <NavLink to="/admin-dashboard/punch" className={navLinkClass}>
+          <FaBuilding />
+          <span>Attendence</span>
         </NavLink>
 
         {/* <NavLink to="/admin-dashboard/employee/leave" className={navLinkClass}>
