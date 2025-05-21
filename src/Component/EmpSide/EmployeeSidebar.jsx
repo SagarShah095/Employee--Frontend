@@ -40,11 +40,11 @@ const EmployeeSidebar = () => {
             end
           />
           <SidebarItem to="/employee/profile" icon={<User />} label="Profile" />
-          {/* <SidebarItem
-            to="/employee/attendance"
+          <SidebarItem
+            to="/employee/punch"
             icon={<CalendarDays />}
             label="Attendance"
-          /> */}
+          />
           {/* <SidebarItem to="/employee/tasks" icon={<ListTodo />} label="Tasks" /> */}
           <SidebarItem
             to="/employee/change-password"
