@@ -48,9 +48,13 @@ const EmpProfile = () => {
           <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
             <div className="flex items-center gap-6">
               <img
-                src={selectedEmp?.profileImage || "/default-profile.png"}
-                alt="Profile"
-                className="w-28 h-28 rounded-full object-cover border-4 border-blue-200 shadow"
+                src={
+                  selectedEmp?.Img
+                    ? `${url}/${selectedEmp.Img}`
+                    : "https://via.placeholder.com/150"
+                }
+                alt="profile"
+                className="w-28 h-28 object-cover rounded-full"
               />
               <div>
                 <h1 className="text-3xl font-bold text-gray-800">
