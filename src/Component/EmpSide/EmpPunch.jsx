@@ -20,7 +20,7 @@ const EmpPunch = () => {
   // ✅ Replace these with actual logged-in user details
 
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,60 +116,59 @@ const EmpPunch = () => {
   };
 
 
-  const handlePunchIn = async () => {
-    if (!isPunchedIn && !checkInTime) {
-      const time = new Date().toISOString();
+ const handlePunchIn = async () => {
+  if (!isPunchedIn && !checkInTime) {
+    const time = new Date().toISOString();
 
-      try {
-        const response = await axios.post(`${url}/api/punch/add`, {
-          emp_id: selectedEmp.emp_id,
-          emp_name: selectedEmp.emp_name,
-          PunchIn: time,
-          PunchOut: null,
-        });
+    try {
+      const response = await axios.post(`${url}/api/punch/add`, {
+        emp_id: selectedEmp.emp_id,
+        emp_name: selectedEmp.emp_name,
+        PunchIn: time,
+      });
 
-        if (response.data.success) {
-          setCheckInTime(time);
-          setIsPunchedIn(true);
-          localStorage.setItem("checkInTime", time); // optional
-        } else {
-          alert("Failed to punch in.");
-        }
-      } catch (error) {
-        console.error("Punch in error:", error);
-        alert("Something went wrong while punching in.");
+      if (response.data.success) {
+        setCheckInTime(time);
+        setIsPunchedIn(true);
+        localStorage.setItem("checkInTime", time);
+        alert("Punch in successful.");
+      } else {
+        alert(response.data.message || "Punch in failed.");
       }
+    } catch (error) {
+      console.error("Punch in error:", error);
+      alert("Something went wrong while punching in.");
     }
-  };
+  }
+};
+
 
 
   const handlePunchOut = async () => {
-    if (isPunchedIn && !hasPunchedOut) {
-      const time = new Date().toISOString();
-      localStorage.setItem("checkOutTime", time);
-      setCheckOutTime(time);
-      setIsPunchedIn(false);
-      setHasPunchedOut(true);
+  if (isPunchedIn && !hasPunchedOut) {
+    const time = new Date().toISOString();
+    try {
+      const response = await axios.post(`${url}/api/punch/out`, {
+        emp_id: selectedEmp.emp_id,
+        PunchOut: time,
+      });
 
-      try {
-        const response = await axios.post(`${url}/api/punch/add`, {
-          emp_id: selectedEmp.emp_id,
-          emp_name: selectedEmp.emp_name,
-          PunchIn: checkInTime,
-          PunchOut: time,
-        });
-
-        if (response.data.success) {
-          alert("Punch record saved successfully.");
-        } else {
-          alert("Failed to save punch record.");
-        }
-      } catch (error) {
-        console.error("Punch out error:", error);
-        alert("Something went wrong while saving the punch record.");
+      if (response.data.success) {
+        setCheckOutTime(time);
+        setIsPunchedIn(false);
+        setHasPunchedOut(true);
+        localStorage.setItem("checkOutTime", time);
+        alert("Punch out successful.");
+      } else {
+        alert("Failed to punch out.");
       }
+    } catch (error) {
+      console.error("Punch out error:", error);
+      alert("Something went wrong while punching out.");
     }
-  };
+  }
+};
+
 
 
   return (

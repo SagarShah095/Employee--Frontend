@@ -44,7 +44,7 @@ const Attendance = () => {
     const [searchEmpId, setSearchEmpId] = useState("");
     const [searchEmpName, setSearchEmpName] = useState("");
 
-    const url = "https://employee-backend-q7hn.onrender.com";
+    const url = "http://localhost:5000";
 
     useEffect(() => {
         const fetchEmployees = async () => {
