@@ -7,16 +7,17 @@ import Loader from "../Loader";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth(); // user should contain emp_id
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [salary, setSalary] = useState({})
+  const [salary, setSalary] = useState({});
 
+  // Fetch salary data when user.emp_id is available
   useEffect(() => {
-    const FetchSalaryData = async () => {
-      if (!user?.emp_id) return; // prevent running without user
+    const fetchSalaryData = async () => {
+      if (!user?.emp_id) return; // wait for user.emp_id
 
       setLoading(true);
       try {
@@ -36,24 +37,20 @@ const EmployeeDashboard = () => {
       }
     };
 
-    FetchSalaryData();
-  }, []); // <- important dependency
+    fetchSalaryData();
+  }, [user?.emp_id]); // dependency on user.emp_id
 
-
-  console.log(salary, "salarysalarysalary")
-
+  // Fetch employee and attendance data when user.emp_id is available
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
-
         // Fetch all employees
         const empRes = await axios.get(`${url}/api/employee/`);
         if (empRes.data.success) {
           const empList = empRes.data.Emp;
           const matchedEmp = empList.find((emp) => emp.emp_id === user.emp_id);
-          setEmployeeData(matchedEmp || {}); // set individual employee
+          setEmployeeData(matchedEmp || {});
         }
 
         // Fetch attendance records
@@ -83,7 +80,7 @@ const EmployeeDashboard = () => {
     if (user?.emp_id) {
       fetchDashboardData();
     }
-  }, [user]);
+  }, [ ]); // dependency on user.emp_id
 
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-GB");
@@ -135,6 +132,7 @@ const EmployeeDashboard = () => {
                 <p><strong>Department:</strong> {employeeData?.Dept}</p>
                 <p><strong>Gender:</strong> {employeeData?.Gen}</p>
                 <p><strong>DOB:</strong> {formatDate(employeeData?.dob)}</p>
+                <p><strong>Salary:</strong> {salary?.amount ? `$${salary.amount}` : "N/A"}</p>
               </div>
             </div>
           </div>

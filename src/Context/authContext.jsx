@@ -5,7 +5,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
 
         if (!token) {
           console.log("No token found");
-          setUser(null);
+          // setUser(null);
           return;
         }
 
@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
 
         if (!role || !userId) {
           console.log("User or role missing in localStorage");
-          setUser(null);
+          // setUser(null);
           return;
         }
 
@@ -60,11 +60,14 @@ const AuthProvider = ({ children }) => {
           localStorage.setItem("user", JSON.stringify(response.data.user));
         } else {
           console.log("Verification failed from server");
-          setUser(null);
+          // setUser(null);
         }
       } catch (error) {
-        console.log("Verify user error:", error.response?.data || error.message);
-        setUser(null);
+        console.log(
+          "Verify user error:",
+          error.response?.data || error.message
+        );
+        // setUser(null);
       } finally {
         setLoading(false);
       }

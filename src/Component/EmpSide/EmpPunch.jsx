@@ -20,7 +20,7 @@ const EmpPunch = () => {
   // ✅ Replace these with actual logged-in user details
 
 
-  const url = "http://localhost:5000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
