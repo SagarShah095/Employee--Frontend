@@ -107,7 +107,6 @@ const EmployeeDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {loading && <Loader />}
       <Navbar />
       <div className="flex">
         <EmployeeSidebar />
