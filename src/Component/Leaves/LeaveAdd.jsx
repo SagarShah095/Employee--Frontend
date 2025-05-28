@@ -17,7 +17,7 @@ const LeaveAdd = () => {
 
   const [redAlert, setRedAlert] = useState(false);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   console.log(empData, "empData");
 
@@ -62,7 +62,7 @@ const LeaveAdd = () => {
     if (leave.toDate > leave.fromDate) {
       try {
         const response = await axios.post(
-          "https://employee-backend-q7hn.onrender.com/api/leave/add",
+          "http://localhost:5000/api/leave/add",
           {
             empId: leave.empId,
             emp_name: leave.emp_name,

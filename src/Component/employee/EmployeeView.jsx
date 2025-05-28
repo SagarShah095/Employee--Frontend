@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 
 const EmployeeView = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   const [selectedemp, setSelectedEmp] = useState({});
   const { id } = useParams();

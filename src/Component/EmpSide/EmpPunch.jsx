@@ -8,24 +8,21 @@ import { Loader } from "lucide-react";
 const EmpPunch = () => {
   const { user } = useAuth();
 
-
   const [isPunchedIn, setIsPunchedIn] = useState(false);
   const [hasPunchedOut, setHasPunchedOut] = useState(false);
   const [checkInTime, setCheckInTime] = useState(null);
   const [checkOutTime, setCheckOutTime] = useState(null);
   const [selectedEmp, setSelectedEmp] = useState(null);
-  const [loading, setLoading] = useState(true); // start with loading true
+  const [loading, setLoading] = useState(true);
+  const [lockUntil, setLockUntil] = useState(null); // ❗ added
 
-
-  // ✅ Replace these with actual logged-in user details
-
-
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:5000";
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user?._id) return;
       setLoading(true);
+
       try {
         const response = await axios.get(`${url}/api/employee/${user?._id}`, {
           headers: {
@@ -35,28 +32,36 @@ const EmpPunch = () => {
 
         if (response.data.success) {
           setSelectedEmp(response.data.emp);
-          await fetchPunchStatus(response.data.emp.emp_id); 
+          await fetchPunchStatus(response.data.emp.emp_id);
 
-          // Check localStorage punch data
           const savedCheckInTime = localStorage.getItem("checkInTime");
           const savedCheckOutTime = localStorage.getItem("checkOutTime");
+          const savedLockUntil = localStorage.getItem("lockUntil");
 
           if (savedCheckInTime) {
-            const timeDiff = Date.now() - new Date(savedCheckInTime).getTime();
-            const hoursPassed = timeDiff / (1000 * 60 * 60);
-
+            const hoursPassed = (Date.now() - new Date(savedCheckInTime)) / (1000 * 60 * 60);
             if (hoursPassed < 12) {
               setCheckInTime(savedCheckInTime);
               setIsPunchedIn(true);
             } else {
               localStorage.removeItem("checkInTime");
               localStorage.removeItem("checkOutTime");
+              localStorage.removeItem("lockUntil");
             }
           }
 
           if (savedCheckOutTime) {
             setCheckOutTime(savedCheckOutTime);
             setHasPunchedOut(true);
+          }
+
+          if (savedLockUntil) {
+            const lockedUntilTime = new Date(savedLockUntil);
+            if (Date.now() < lockedUntilTime.getTime()) {
+              setLockUntil(lockedUntilTime);
+            } else {
+              localStorage.removeItem("lockUntil");
+            }
           }
 
         } else {
@@ -95,12 +100,8 @@ const EmpPunch = () => {
       }
     };
 
-    fetchPunchStatus()
     fetchData();
   }, [user]);
-
-
-  console.log(selectedEmp, "selectedEmpselectedEmpselectedEmp")
 
   const formatDateTime = (isoString) => {
     if (!isoString) return "--";
@@ -115,61 +116,61 @@ const EmpPunch = () => {
     });
   };
 
+  const handlePunchIn = async () => {
+    if (!isPunchedIn && !checkInTime && !lockUntil) {
+      const time = new Date().toISOString();
 
- const handlePunchIn = async () => {
-  if (!isPunchedIn && !checkInTime) {
-    const time = new Date().toISOString();
+      try {
+        const response = await axios.post(`${url}/api/punch/add`, {
+          emp_id: selectedEmp.emp_id,
+          emp_name: selectedEmp.emp_name,
+          PunchIn: time,
+        });
 
-    try {
-      const response = await axios.post(`${url}/api/punch/add`, {
-        emp_id: selectedEmp.emp_id,
-        emp_name: selectedEmp.emp_name,
-        PunchIn: time,
-      });
-
-      if (response.data.success) {
-        setCheckInTime(time);
-        setIsPunchedIn(true);
-        localStorage.setItem("checkInTime", time);
-        alert("Punch in successful.");
-      } else {
-        alert(response.data.message || "Punch in failed.");
+        if (response.data.success) {
+          setCheckInTime(time);
+          setIsPunchedIn(true);
+          localStorage.setItem("checkInTime", time);
+          alert("Punch in successful.");
+        } else {
+          alert(response.data.message || "Punch in failed.");
+        }
+      } catch (error) {
+        console.error("Punch in error:", error);
+        alert("Something went wrong while punching in.");
       }
-    } catch (error) {
-      console.error("Punch in error:", error);
-      alert("Something went wrong while punching in.");
     }
-  }
-};
-
-
+  };
 
   const handlePunchOut = async () => {
-  if (isPunchedIn && !hasPunchedOut) {
-    const time = new Date().toISOString();
-    try {
-      const response = await axios.post(`${url}/api/punch/out`, {
-        emp_id: selectedEmp.emp_id,
-        PunchOut: time,
-      });
+    if (isPunchedIn && !hasPunchedOut && !lockUntil) {
+      const time = new Date().toISOString();
+      try {
+        const response = await axios.post(`${url}/api/punch/out`, {
+          emp_id: selectedEmp.emp_id,
+          PunchOut: time,
+        });
 
-      if (response.data.success) {
-        setCheckOutTime(time);
-        setIsPunchedIn(false);
-        setHasPunchedOut(true);
-        localStorage.setItem("checkOutTime", time);
-        alert("Punch out successful.");
-      } else {
-        alert("Failed to punch out.");
+        if (response.data.success) {
+          setCheckOutTime(time);
+          setIsPunchedIn(false);
+          setHasPunchedOut(true);
+          localStorage.setItem("checkOutTime", time);
+
+          const lockUntilTime = new Date(Date.now() + 12 * 60 * 60 * 1000); // 12 hours
+          setLockUntil(lockUntilTime);
+          localStorage.setItem("lockUntil", lockUntilTime.toISOString());
+
+          alert("Punch out successful. Locked for 12 hours.");
+        } else {
+          alert("Failed to punch out.");
+        }
+      } catch (error) {
+        console.error("Punch out error:", error);
+        alert("Something went wrong while punching out.");
       }
-    } catch (error) {
-      console.error("Punch out error:", error);
-      alert("Something went wrong while punching out.");
     }
-  }
-};
-
-
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -186,8 +187,8 @@ const EmpPunch = () => {
               {checkInTime && !hasPunchedOut
                 ? "Present (Punched In)"
                 : checkOutTime
-                  ? "Completed"
-                  : "Not Punched In"}
+                ? "Completed"
+                : "Not Punched In"}
             </p>
 
             <p className="text-gray-500 mb-4">
@@ -199,24 +200,30 @@ const EmpPunch = () => {
               <button
                 className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded disabled:opacity-50"
                 onClick={handlePunchIn}
-                disabled={!!checkInTime}
+                disabled={!!checkInTime || !!lockUntil}
               >
                 Punch In
               </button>
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
                 onClick={handlePunchOut}
-                disabled={!isPunchedIn || hasPunchedOut}
+                disabled={!isPunchedIn || hasPunchedOut || !!lockUntil}
               >
                 Punch Out
               </button>
             </div>
+
+            {lockUntil && (
+              <p className="text-sm text-red-500 mt-4">
+                Punching disabled until:{" "}
+                {formatDateTime(lockUntil)}
+              </p>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default EmpPunch;
