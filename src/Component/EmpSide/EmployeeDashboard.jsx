@@ -38,7 +38,7 @@ const EmployeeDashboard = () => {
     };
 
     fetchSalaryData();
-  }, [user?.emp_id]); // dependency on user.emp_id
+  }, []); // dependency on user.emp_id
 
   // Fetch employee and attendance data when user.emp_id is available
   useEffect(() => {
@@ -80,7 +80,7 @@ const EmployeeDashboard = () => {
     if (user?.emp_id) {
       fetchDashboardData();
     }
-  }, [ ]); // dependency on user.emp_id
+  }, []); // dependency on user.emp_id
 
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-GB");

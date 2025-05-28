@@ -16,11 +16,11 @@ const EmpPunch = () => {
   const [loading, setLoading] = useState(true);
   const [lockUntil, setLockUntil] = useState(null); // ❗ added
 
-  console.log(selectedEmp,"selectedEmpselectedEmpselectedEmp")
+  console.log(selectedEmp, "selectedEmpselectedEmpselectedEmp");
 
   const url = "https://employee-backend-q7hn.onrender.com";
 
-  console.log(checkInTime,"checkInTimecheckInTime")
+  console.log(checkInTime, "checkInTimecheckInTime");
   useEffect(() => {
     const fetchData = async () => {
       if (!user?._id) return;
@@ -42,7 +42,8 @@ const EmpPunch = () => {
           const savedLockUntil = localStorage.getItem("lockUntil");
 
           if (savedCheckInTime) {
-            const hoursPassed = (Date.now() - new Date(savedCheckInTime)) / (1000 * 60 * 60);
+            const hoursPassed =
+              (Date.now() - new Date(savedCheckInTime)) / (1000 * 60 * 60);
             if (hoursPassed < 12) {
               setCheckInTime(savedCheckInTime);
               setIsPunchedIn(true);
@@ -66,7 +67,6 @@ const EmpPunch = () => {
               localStorage.removeItem("lockUntil");
             }
           }
-
         } else {
           console.error("Failed to fetch employee");
         }
@@ -176,11 +176,11 @@ const EmpPunch = () => {
   };
 
   return (
-<div className="min-h-screen bg-gray-100">
-  {loading && <Loader />}
-  <Navbar />
-  <div className="flex">
-    <EmployeeSidebar />
+    <div className="min-h-screen bg-gray-100">
+      {loading && <Loader />}
+      <Navbar />
+      <div className="flex">
+        <EmployeeSidebar />
         <div className="flex-1 p-8">
           <div className="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
             <h2 className="text-xl font-bold text-teal-600 mb-4">Attendance</h2>
@@ -218,8 +218,7 @@ const EmpPunch = () => {
 
             {lockUntil && (
               <p className="text-sm text-red-500 mt-4">
-                Punching disabled until:{" "}
-                {formatDateTime(lockUntil)}
+                Punching disabled until: {formatDateTime(lockUntil)}
               </p>
             )}
           </div>
