@@ -43,7 +43,6 @@ const LeaveDetails = () => {
 
   return (
     <div>
-      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">
@@ -51,6 +50,7 @@ const LeaveDetails = () => {
             <Navbar />
           </div>
           <div className="max-w-xl mx-auto mt-8 px-4">
+      {loading && <Loader/>}
             <div>
               <h3 className="text-3xl font-bold text-center text-teal-700 mb-6">
                 Leave Details

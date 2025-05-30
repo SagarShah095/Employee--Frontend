@@ -95,7 +95,6 @@ const LeaveAdd = () => {
 
   return (
     <div>
-      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">
@@ -103,6 +102,7 @@ const LeaveAdd = () => {
             <Navbar />
           </div>
           <div>
+      {loading && <Loader/>}
             <div className="flex justify-center items-center mt-4">
               <h1 className="font-semibold text-xl">Apply Leaves</h1>
             </div>

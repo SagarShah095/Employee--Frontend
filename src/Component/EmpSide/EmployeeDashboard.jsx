@@ -89,15 +89,34 @@ const EmployeeDashboard = () => {
       hour12: true,
     });
 
-  const calculateTotalTime = (inTime, outTime) => {
+  const calculateTotalTime = (inTime, outTime, lunchStart, lunchEnd) => {
     if (!inTime || !outTime) return "--";
+
     const inDate = new Date(inTime);
     const outDate = new Date(outTime);
-    const diff = outDate - inDate;
-    if (diff < 0) return "--";
 
-    const hrs = Math.floor(diff / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
+    // Handle cross-midnight scenarios (optional)
+    if (outDate < inDate) return "--";
+
+    let totalDiff = outDate - inDate;
+
+    // Subtract lunch time if both start and end exist and are valid
+    if (lunchStart && lunchEnd) {
+      const lunchStartDate = new Date(lunchStart);
+      const lunchEndDate = new Date(lunchEnd);
+
+      if (
+        lunchEndDate > lunchStartDate &&
+        lunchStartDate > inDate &&
+        lunchEndDate < outDate
+      ) {
+        totalDiff -= lunchEndDate - lunchStartDate;
+      }
+    }
+
+    // Convert milliseconds to hours and minutes
+    const hrs = Math.floor(totalDiff / 3600000);
+    const mins = Math.round((totalDiff % 3600000) / 60000); // Round to nearest minute
 
     return `${hrs}h ${mins}m`;
   };
@@ -108,6 +127,7 @@ const EmployeeDashboard = () => {
       <div className="flex">
         <EmployeeSidebar />
         <div className="w-full p-6">
+          {loading && <Loader />}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-2xl font-bold mb-4">
               Welcome, {employeeData?.emp_name || "Employee"}
@@ -153,6 +173,8 @@ const EmployeeDashboard = () => {
                     <tr className="text-gray-700">
                       <th className="py-2 px-4 border">Date</th>
                       <th className="py-2 px-4 border">Punch In</th>
+                      <th className="py-2 px-4 border">Launch Start</th>
+                      <th className="py-2 px-4 border">Launch End</th>
                       <th className="py-2 px-4 border">Punch Out</th>
                       <th className="py-2 px-4 border">Total Time</th>
                     </tr>
@@ -163,10 +185,22 @@ const EmployeeDashboard = () => {
                         <td className="py-2 px-4">{formatDate(att.PunchIn)}</td>
                         <td className="py-2 px-4">{formatTime(att.PunchIn)}</td>
                         <td className="py-2 px-4">
-                          {formatTime(att.PunchOut)}
+                          {formatTime(att.LunchStart)}
                         </td>
                         <td className="py-2 px-4">
-                          {calculateTotalTime(att.PunchIn, att.PunchOut)}
+                          {formatTime(att.LunchEnd)}
+                        </td>
+                        <td className="py-2 px-4">
+                          {formatTime(att.PunchOut)}
+                        </td>
+                        {console.log(attendanceData, "attemce")}
+                        <td className="py-2 px-4">
+                          {calculateTotalTime(
+                            att.PunchIn,
+                            att.PunchOut,
+                            att.LunchStart,
+                            att.LunchEnd
+                          )}
                         </td>
                       </tr>
                     ))}

@@ -42,9 +42,8 @@ const EmpProfile = () => {
       <div className="flex">
         <EmployeeSidebar />
         <div className="flex-1 p-6">
-          {loading && <Loader />}
-
           <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
+            {loading && <Loader />}
             <div className="flex items-center gap-6">
               <img
                 src={

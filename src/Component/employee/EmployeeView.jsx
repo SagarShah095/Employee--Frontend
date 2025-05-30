@@ -104,12 +104,12 @@ const EmployeeView = () => {
 
   return (
     <div className="flex">
-      {loading && <Loader />}
       <AdminSidebar />
       <div className="w-full bg-gray-100">
         <Navbar />
         <div className="p-5">
           <div className="bg-white shadow-md p-5 rounded-lg">
+      {loading && <Loader />}
             <h2 className="mb-4 text-center text-4xl font-bold">Employee Details</h2>
             {selectedemp ? (
               <div className="gap-10 mt-10 justify-center items-center flex">

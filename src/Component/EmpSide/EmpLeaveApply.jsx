@@ -24,9 +24,14 @@ const LeaveAdd = () => {
       if (!user?._id) return;
       setLoading(true);
       try {
-        const res = await axios.get(`https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+        const res = await axios.get(
+          `https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (res.data.success) {
           const emp = res.data.emp?.find((e) => e.email === user.email);
           setEmpData(emp);
@@ -93,12 +98,14 @@ const LeaveAdd = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
-      {loading && <Loader />}
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <EmployeeSidebar />
         <div className="w-full bg-gray-100 min-h-screen p-8">
-          <h1 className="text-xl font-semibold text-center mb-6">Apply Leaves</h1>
+          {loading && <Loader />}
+          <h1 className="text-xl font-semibold text-center mb-6">
+            Apply Leaves
+          </h1>
           <form
             onSubmit={handleSubmit}
             className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mx-auto"

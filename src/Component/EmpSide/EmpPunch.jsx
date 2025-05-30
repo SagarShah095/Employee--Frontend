@@ -14,10 +14,11 @@ const EmpPunch = () => {
   const [isPunchedIn, setIsPunchedIn] = useState(false);
   const [hasPunchedOut, setHasPunchedOut] = useState(false);
   const [lockUntil, setLockUntil] = useState(null);
+  const [lunchInTime, setLunchInTime] = useState(null);
+  const [lunchOutTime, setLunchOutTime] = useState(null);
 
   const url = "https://employee-backend-q7hn.onrender.com";
 
-  // 🔄 Fetch employee and punch status
   useEffect(() => {
     const fetchData = async () => {
       if (!user?._id) return;
@@ -32,19 +33,7 @@ const EmpPunch = () => {
           const emp = res.data.emp;
           setSelectedEmp(emp);
 
-          // 👉 Fetch punch status using latest endpoint
           await fetchPunchStatus(emp.emp_id);
-
-          // 🕒 Restore lock state from localStorage
-          const storedLockUntil = localStorage.getItem("lockUntil");
-          if (storedLockUntil) {
-            const lockTime = new Date(storedLockUntil);
-            if (Date.now() < lockTime.getTime()) {
-              setLockUntil(lockTime);
-            } else {
-              localStorage.removeItem("lockUntil");
-            }
-          }
         } else {
           console.error("Employee fetch failed.");
         }
@@ -77,7 +66,19 @@ const EmpPunch = () => {
           setHasPunchedOut(false);
         }
 
-        // 🔒 Set lockUntil from backend
+        if (punch.LunchStart) {
+          setLunchInTime(punch.LunchStart);
+        } else {
+          setLunchInTime(null);
+        }
+
+        if (punch.LunchEnd) {
+          setLunchOutTime(punch.LunchEnd);
+        } else {
+          setLunchOutTime(null);
+        }
+
+        // 🔒 Handle lockUntil
         if (punch?.lockUntil) {
           const lockTime = new Date(punch.lockUntil);
           if (Date.now() < lockTime.getTime()) {
@@ -106,7 +107,6 @@ const EmpPunch = () => {
     });
   };
 
-  // ✅ Handle Punch In
   const handlePunchIn = async () => {
     if (!selectedEmp || isPunchedIn || lockUntil) return;
 
@@ -121,7 +121,6 @@ const EmpPunch = () => {
       if (res.data.success) {
         setCheckInTime(now);
         setIsPunchedIn(true);
-        localStorage.setItem("checkInTime", now);
         alert("Punch In successful.");
       } else {
         alert(res.data.message || "Punch In failed.");
@@ -133,7 +132,7 @@ const EmpPunch = () => {
   };
 
   const handlePunchOut = async () => {
-    if (!selectedEmp || !isPunchedIn || hasPunchedOut) return;
+    if (!selectedEmp || !isPunchedIn || hasPunchedOut || !lunchOutTime) return;
 
     try {
       const res = await axios.post(`${url}/api/punch/out`, {
@@ -145,7 +144,6 @@ const EmpPunch = () => {
         setCheckOutTime(punchData.PunchOut);
         setHasPunchedOut(true);
 
-        // 🔒 Set lockUntil from backend response
         if (punchData.lockUntil) {
           setLockUntil(new Date(punchData.lockUntil));
         }
@@ -160,15 +158,47 @@ const EmpPunch = () => {
     }
   };
 
+  const handleLunchIn = async () => {
+    try {
+      const res = await axios.post(`${url}/api/punch/lunch-start`, {
+        emp_id: selectedEmp.emp_id,
+      });
+      if (res.data.success) {
+        const now = new Date().toISOString();
+        setLunchInTime(now);
+        alert("Lunch In recorded.");
+      } else {
+        alert(res.data.message);
+      }
+    } catch (err) {
+      alert("Lunch In error.");
+    }
+  };
+
+  const handleLunchOut = async () => {
+    try {
+      const res = await axios.post(`${url}/api/punch/lunch-end`, {
+        emp_id: selectedEmp.emp_id,
+      });
+      if (res.data.success) {
+        const now = new Date().toISOString();
+        setLunchOutTime(now);
+        alert("Lunch Out recorded.");
+      } else {
+        alert(res.data.message);
+      }
+    } catch (err) {
+      alert("Lunch Out error.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-      {loading && (
+      {loading ? (
         <div className="flex items-center justify-center h-screen">
           <Loader className="animate-spin w-12 h-12 text-teal-600" />
         </div>
-      )}
-
-      {!loading && (
+      ) : (
         <>
           <Navbar />
           <div className="flex">
@@ -190,10 +220,13 @@ const EmpPunch = () => {
 
                 <p className="text-gray-500 mb-4">
                   Check-in: {formatDateTime(checkInTime)} <br />
+                  Lunch In: {formatDateTime(lunchInTime)} <br />
+                  Lunch Out: {formatDateTime(lunchOutTime)}
+                  <br />
                   Check-out: {formatDateTime(checkOutTime)}
                 </p>
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                   <button
                     className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded disabled:opacity-50"
                     onClick={handlePunchIn}
@@ -202,10 +235,33 @@ const EmpPunch = () => {
                     Punch In
                   </button>
 
+                  {isPunchedIn && !lunchInTime && (
+                    <button
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                      onClick={handleLunchIn}
+                    >
+                      Lunch In
+                    </button>
+                  )}
+
+                  {lunchInTime && !lunchOutTime && (
+                    <button
+                      className="bg-yellow-800 hover:bg-yellow-900 text-white px-4 py-2 rounded"
+                      onClick={handleLunchOut}
+                    >
+                      Lunch Out
+                    </button>
+                  )}
+
                   <button
                     className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
                     onClick={handlePunchOut}
-                    disabled={!isPunchedIn || hasPunchedOut || lockUntil}
+                    disabled={
+                      !isPunchedIn ||
+                      hasPunchedOut ||
+                      lockUntil ||
+                      !lunchOutTime
+                    }
                   >
                     Punch Out
                   </button>

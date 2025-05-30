@@ -295,7 +295,6 @@ const Attendance = () => {
 
   return (
     <div className="flex">
-      {loading && <Loader />}
       <AdminSidebar />
       <div className="w-full bg-gray-100 min-h-screen">
         <Navbar />
@@ -304,6 +303,7 @@ const Attendance = () => {
             Employee Attendance
           </h1>
 
+      {loading && <Loader />}
           <div className="bg-white p-4 rounded-lg shadow mb-6">
             <div className="flex gap-4 flex-wrap items-end">
               <div className="flex-1 min-w-[200px] flex flex-col">

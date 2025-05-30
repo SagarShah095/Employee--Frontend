@@ -72,7 +72,6 @@ const List = () => {
 
   return (
     <div className="relative">
-      {loading && <Loader />}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100">
@@ -80,6 +79,7 @@ const List = () => {
             <Navbar />
           </div>
           <div className="p-5">
+      {loading && <Loader />}
             <div className="text-center">
               <h3 className="text-2xl font-bold">Manage Employee</h3>
             </div>

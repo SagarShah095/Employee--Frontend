@@ -17,7 +17,7 @@ import AddSalary from "./Component/Salary/AddSalary";
 import EmployeeView from "./Component/employee/EmployeeView";
 import SalaryView from "./Component/employee/SalaryView";
 import LeaveAdd from "./Component/Leaves/LeaveAdd";
-import LeaveView from './Component/Leaves/LeaveView';
+import LeaveView from "./Component/Leaves/LeaveView";
 import LeaveDetails from "./Component/Leaves/LeaveDetails";
 import EmpProfile from "./Component/EmpSide/EmpProfile";
 import EmpChangePass from "./Component/EmpSide/EmpChangePass";
@@ -91,7 +91,10 @@ function App() {
           element={<EmployeeView />}
         />
         <Route path="/admin-dashboard/employee/edit/:id" element={<Edit />} />
-        <Route path="/admin-dashboard/employee/salary/:id" element={<SalaryView />} />
+        <Route
+          path="/admin-dashboard/employee/salary/:id"
+          element={<SalaryView />}
+        />
 
         <Route
           path="/admin-dashboard/employee/salary"
@@ -101,27 +104,20 @@ function App() {
           path="/admin-dashboard/employee/leaveview"
           element={<LeaveView />}
         />
-        <Route
-          path="/admin-dashboard/employee/leave"
-          element={<LeaveAdd />}
-        />
+        <Route path="/admin-dashboard/employee/leave" element={<LeaveAdd />} />
         <Route
           path="/admin-dashboard/employee/leave/:id"
           element={<LeaveDetails />}
         />
-        
+        <Route path="/admin-dashboard/punch" element={<Attendance />} />
+
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee/profile" element={<EmpProfile />} />
         <Route path="/employee/change-password" element={<EmpChangePass />} />
         <Route path="/employee/leave-history" element={<EmpLeave />} />
         <Route path="/employee/apply-leave" element={<EmpLeaveApply />} />
         <Route path="/employee/salary-history" element={<SalaryHistory />} />
-        <Route path="/admin-dashboard/punch" element={<Attendance />} />
         <Route path="/employee/punch" element={<EmpPunch />} />
-
-
-
-
       </Routes>
     </BrowserRouter>
   );

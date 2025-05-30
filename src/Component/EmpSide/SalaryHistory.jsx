@@ -44,12 +44,12 @@ const SalaryHistory = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
-      {loading && <Loader />}
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
 
         <div className="flex-1 p-8 overflow-y-auto">
+      {loading && <Loader />}
           <h1 className="text-2xl font-semibold text-gray-700 mb-6">
             Salary History
           </h1>

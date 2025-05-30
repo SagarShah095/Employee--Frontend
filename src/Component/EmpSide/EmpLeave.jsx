@@ -38,7 +38,6 @@ const EmpLeave = () => {
   console.log(data, "U Data");
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
-      {loading && <Loader />}
       <Navbar />
 
       {/* Main Section */}
@@ -48,6 +47,7 @@ const EmpLeave = () => {
 
         {/* Content Area */}
         <main className="flex-1 p-10 bg-gradient-to-br from-white via-blue-50 to-blue-100">
+      {loading && <Loader />}
           <div className="backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl p-10 border border-gray-200">
             <h1 className="text-4xl font-extrabold text-blue-700 mb-6">
               Employee Leave Portal

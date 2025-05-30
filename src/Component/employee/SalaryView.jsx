@@ -40,11 +40,11 @@ const SalaryView = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {loading && <Loader />}
       <AdminSidebar />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <div className="m-10">
+      {loading && <Loader />}
           <h1 className="text-2xl font-bold mb-6">Salary Records</h1>
 
           <div className="overflow-x-auto bg-white shadow-lg rounded-md">
@@ -66,7 +66,9 @@ const SalaryView = () => {
                   <td className="py-3 px-4">{salary.allowances}</td>
                   <td className="py-3 px-4">{salary.deductions}</td>
                   <td className="py-3 px-4">{salary.totalSalary}</td>
-                  <td className="py-3 px-4">{new Date(salary.payDate).toLocaleString()}</td>
+                  <td className="py-3 px-4">
+                    {new Date(salary.payDate).toLocaleString()}
+                  </td>
                 </tr>
               </tbody>
             </table>

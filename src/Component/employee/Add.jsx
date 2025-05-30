@@ -108,7 +108,6 @@ const Add = ({ addEmp, setAddEmp }) => {
 
   return (
     <div>
-      {loading && <Loader />}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100">
@@ -116,6 +115,7 @@ const Add = ({ addEmp, setAddEmp }) => {
             <Navbar />
           </div>
           <div className="p-10">
+      {loading && <Loader />}
             <div className="w-full p-6 bg-white shadow-md  rounded-lg">
               <h1 className="text-2xl font-bold">Add New Employee</h1>
               <form onSubmit={handleSubmit}>

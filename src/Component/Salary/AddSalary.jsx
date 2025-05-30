@@ -156,7 +156,6 @@ const AddSalary = () => {
 
   return (
     <div>
-      {loading && <Loader />}
       <ToastContainer position="top-right" autoClose={2500} />
       <div className="flex">
         <AdminSidebar />
@@ -165,6 +164,7 @@ const AddSalary = () => {
             <Navbar />
           </div>
           <div className="m-10 p-5 rounded-md shadow-lg bg-white">
+      {loading && <Loader />}
             <form onSubmit={handleSubmit}>
               <h1 className="text-2xl font-bold">Add Salary</h1>
               <div className="grid grid-cols-2 gap-5 mt-5">

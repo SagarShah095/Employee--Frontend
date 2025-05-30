@@ -54,7 +54,6 @@ const DepartmentList = ({ setDepartment, department }) => {
 
   return (
     <>
-      {loading && <Loader />}
       <div>
         <div className="flex">
           <AdminSidebar />
@@ -62,6 +61,7 @@ const DepartmentList = ({ setDepartment, department }) => {
             <div className="w-full">
               <Navbar />
             </div>
+            {loading && <Loader />}
             <div className="p-5">
               <div className="text-center">
                 <h3 className="text-2xl font-bold">Manage Department</h3>

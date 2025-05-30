@@ -87,7 +87,6 @@ const EditDepartment = () => {
 
   return (
     <div>
-      {loading&& <Loader />}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 ">
@@ -97,6 +96,7 @@ const EditDepartment = () => {
 
           {/* add */}
           <div className="max-w-md mx-auto mt-36 p-6 bg-white shadow-md  rounded-lg">
+      {loading&& <Loader />}
             <div>
               <h3 className="text-2xl  font-semibold text-black mb-6">
                 Edit New Department
