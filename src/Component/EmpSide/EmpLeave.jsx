@@ -10,7 +10,7 @@ import { Loader } from "lucide-react";
 const EmpLeave = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const URL = "http://localhost:4000";
+  const URL = "https://employee-backend-q7hn.onrender.com";
 
   const [data, setData] = useState([]);
 

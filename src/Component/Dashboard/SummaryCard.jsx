@@ -18,7 +18,7 @@ const SummaryCard = ({ icon, text }) => {
     if (!token) return setCount(0);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/employee/count",
+        "https://employee-backend-q7hn.onrender.com/api/employee/count",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const SummaryCard = ({ icon, text }) => {
     if (!token) return;
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/punch/attendance-summary",
+        "https://employee-backend-q7hn.onrender.com/api/punch/attendance-summary",
         {
           headers: {
             Authorization: `Bearer ${token}`,

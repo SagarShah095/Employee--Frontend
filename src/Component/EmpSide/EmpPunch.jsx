@@ -15,7 +15,7 @@ const EmpPunch = () => {
   const [hasPunchedOut, setHasPunchedOut] = useState(false);
   const [lockUntil, setLockUntil] = useState(null);
 
-  const url = "http://localhost:4000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   // 🔄 Fetch employee and punch status
   useEffect(() => {
