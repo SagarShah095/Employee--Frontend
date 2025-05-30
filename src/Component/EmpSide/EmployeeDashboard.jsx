@@ -10,7 +10,7 @@ const EmployeeDashboard = () => {
   const url = "https://employee-backend-q7hn.onrender.com";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [salary, setSalary] = useState({});
 
   useEffect(() => {
@@ -26,8 +26,10 @@ const EmployeeDashboard = () => {
           );
           console.log(matchedSalary);
           setSalary(matchedSalary || {});
+          setLoading(false);
         } else {
           console.log("Salary Error in Dashboard");
+          setLoading(false);
         }
       } catch (error) {
         console.log("Error fetching salary:", error);
@@ -50,6 +52,7 @@ const EmployeeDashboard = () => {
             (emp) => emp?.emp_id === user?.emp_id
           );
           setEmployeeData(matchedEmp || {});
+          setLoading(false);
         }
 
         const attRes = await axios.get(`${url}/api/punch`);
@@ -65,11 +68,12 @@ const EmployeeDashboard = () => {
           const sorted = [...filtered].sort(
             (a, b) => new Date(b.PunchIn) - new Date(a.PunchIn)
           );
-
           setAttendanceData(sorted);
+          setLoading(false);
         }
       } catch (error) {
         console.error("Dashboard Fetch Error:", error);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -157,7 +161,7 @@ const EmployeeDashboard = () => {
                 </p>
                 <p>
                   <strong>Salary:</strong>{" "}
-                  {salary?.amount ? `$${salary.amount}` : "N/A"}
+                  {salary?.totalSalary ? `₹${salary.totalSalary}` : "N/A"}
                 </p>
               </div>
             </div>

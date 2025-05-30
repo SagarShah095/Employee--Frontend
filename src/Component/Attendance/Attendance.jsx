@@ -85,7 +85,6 @@ const Attendance = () => {
   const [currentEdit, setCurrentEdit] = useState(null); // object of row being edited or null
   const [showUser, setShowUser] = useState({});
 
-
   const url = "https://employee-backend-q7hn.onrender.com";
 
   useEffect(() => {
@@ -103,7 +102,6 @@ const Attendance = () => {
     };
     fetchEmployees();
   }, []);
-
 
   useEffect(() => {
     const fetchPunches = async () => {
@@ -292,7 +290,6 @@ const Attendance = () => {
 
   const matchTotalData = empData.filter((data) => data?.emp_id === showUser);
 
-
   return (
     <div className="flex">
       <AdminSidebar />
@@ -374,16 +371,28 @@ const Attendance = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={8}
-                      className="text-center text-gray-500 px-4 py-6"
-                    >
-                      No data found.
-                    </td>
-                  </tr>
-                )}
+                {loading
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <tr key={index} className="border-t">
+                        {[24, 16, 16, 20].map((width, colIndex) => (
+                          <td key={colIndex} className="py-4 px-4">
+                            <div
+                              className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+                            ></div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  : filteredData.length === 0 && (
+                      <tr>
+                        <td
+                          colSpan={8}
+                          className="text-center text-gray-500 px-4 py-6"
+                        >
+                          No data found.
+                        </td>
+                      </tr>
+                    )}
                 {filteredData.map((row) => (
                   <tr
                     key={row.emp_id}
@@ -455,13 +464,13 @@ const Attendance = () => {
                     disabled={editMode}
                     className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
                   >
-                        <option value="" selected disabled>
-                          selected empId
-                        </option>
+                    <option value="" selected disabled>
+                      selected empId
+                    </option>
                     {empData?.map((data, i) => (
-                        <option key={i} value={data.emp_id}>
-                          {data.emp_id}
-                        </option>
+                      <option key={i} value={data.emp_id}>
+                        {data.emp_id}
+                      </option>
                     ))}
                   </select>
                 </label>
@@ -476,8 +485,9 @@ const Attendance = () => {
                     disabled={editMode}
                     className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
                   >
-                    
-                    <option value={matchTotalData[0]?.emp_name}>{matchTotalData[0]?.emp_name}</option>
+                    <option value={matchTotalData[0]?.emp_name}>
+                      {matchTotalData[0]?.emp_name}
+                    </option>
                   </select>
                 </label>
 
