@@ -10,7 +10,7 @@ const EmployeeDashboard = () => {
   const url = "https://employee-backend-q7hn.onrender.com";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [salary, setSalary] = useState({});
 
   useEffect(() => {
@@ -26,8 +26,10 @@ const EmployeeDashboard = () => {
           );
           console.log(matchedSalary);
           setSalary(matchedSalary || {});
+          setLoading(false);
         } else {
           console.log("Salary Error in Dashboard");
+          setLoading(false);
         }
       } catch (error) {
         console.log("Error fetching salary:", error);
@@ -50,6 +52,7 @@ const EmployeeDashboard = () => {
             (emp) => emp?.emp_id === user?.emp_id
           );
           setEmployeeData(matchedEmp || {});
+          setLoading(false);
         }
 
         const attRes = await axios.get(`${url}/api/punch`);
@@ -65,11 +68,12 @@ const EmployeeDashboard = () => {
           const sorted = [...filtered].sort(
             (a, b) => new Date(b.PunchIn) - new Date(a.PunchIn)
           );
-
           setAttendanceData(sorted);
+          setLoading(false);
         }
       } catch (error) {
         console.error("Dashboard Fetch Error:", error);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -137,7 +141,7 @@ const EmployeeDashboard = () => {
                 </p>
                 <p>
                   <strong>Salary:</strong>{" "}
-                  {salary?.amount ? `$${salary.amount}` : "N/A"}
+                  {salary?.totalSalary ? `₹${salary.totalSalary}` : "N/A"}
                 </p>
               </div>
             </div>
@@ -146,36 +150,62 @@ const EmployeeDashboard = () => {
           {/* Attendance Records */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Latest Attendance</h3>
-            {attendanceData.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-sm text-left border border-gray-200">
-                  <thead className="bg-gray-100">
-                    <tr className="text-gray-700">
-                      <th className="py-2 px-4 border">Date</th>
-                      <th className="py-2 px-4 border">Punch In</th>
-                      <th className="py-2 px-4 border">Punch Out</th>
-                      <th className="py-2 px-4 border">Total Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {attendanceData.slice(0, 10).map((att, index) => (
-                      <tr key={index} className="border-t">
-                        <td className="py-2 px-4">{formatDate(att.PunchIn)}</td>
-                        <td className="py-2 px-4">{formatTime(att.PunchIn)}</td>
-                        <td className="py-2 px-4">
-                          {formatTime(att.PunchOut)}
-                        </td>
-                        <td className="py-2 px-4">
-                          {calculateTotalTime(att.PunchIn, att.PunchOut)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p className="text-gray-500">No attendance records found.</p>
-            )}
+            {/* {!loading && attendanceData.length > 0 ? ( */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm text-left border border-gray-200">
+                <thead className="bg-gray-100">
+                  <tr className="text-gray-700">
+                    <th className="py-3 px-4 border font-semibold">Date</th>
+                    <th className="py-3 px-4 border font-semibold">Punch In</th>
+                    <th className="py-3 px-4 border font-semibold">
+                      Punch Out
+                    </th>
+                    <th className="py-3 px-4 border font-semibold">
+                      Total Time
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading
+                    ? Array.from({ length: 6 }).map((_, index) => (
+                        <tr key={index} className="border-t">
+                          {[24, 16, 16, 20].map((width, colIndex) => (
+                            <td key={colIndex} className="py-4 px-4">
+                              <div
+                                className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+                              ></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))
+                    : attendanceData.length > 0
+                    ? attendanceData.slice(0, 10).map((att, index) => (
+                        <tr key={index} className="border-t hover:bg-gray-50">
+                          <td className="py-3 px-4">
+                            {formatDate(att.PunchIn)}
+                          </td>
+                          <td className="py-3 px-4">
+                            {formatTime(att.PunchIn)}
+                          </td>
+                          <td className="py-3 px-4">
+                            {formatTime(att.PunchOut)}
+                          </td>
+                          <td className="py-3 px-4">
+                            {calculateTotalTime(att.PunchIn, att.PunchOut)}
+                          </td>
+                        </tr>
+                      ))
+                    : !loading && (
+                        <p className="text-gray-500">
+                          No attendance records found.
+                        </p>
+                      )}
+                </tbody>
+              </table>
+            </div>
+            {/* ) : (
+              
+            )} */}
           </div>
         </div>
       </div>

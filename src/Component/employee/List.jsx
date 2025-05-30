@@ -123,7 +123,18 @@ const List = () => {
                   </tr>
                 </thead>
                 <tbody className="">
-                  {empData?.map((emp, i) => (
+                  {loading ?  Array.from({ length: 6 }).map((_, index) => (
+                        <tr key={index} className="border-t">
+                          {[24, 16, 16, 20].map((width, colIndex) => (
+                            <td key={colIndex} className="py-4 px-4">
+                              <div
+                                className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+                              ></div>
+                            </td>
+                          ))}
+                        </tr>
+                      )): 
+                  empData?.map((emp, i) => (
                     <tr
                       key={i}
                       className="bg-white border-b  text-black border-gray-200 hover:bg-gray-50 "
@@ -190,7 +201,8 @@ const List = () => {
                         </NavLink>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                  }
                 </tbody>
               </table>
             </div>
