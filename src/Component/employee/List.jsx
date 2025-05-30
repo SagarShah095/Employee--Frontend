@@ -9,7 +9,7 @@ const List = () => {
 
   const { id } = useParams();
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [empData, setEmpData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ const List = () => {
           },
         });
         if (response.data.success) {
-          console.log(response.data.Emp, "response data");
           setEmpData(response.data.Emp);
         }
         setLoading(false);
@@ -42,7 +41,6 @@ const List = () => {
     fetchData();
   }, []);
 
-  console.log(empData, "empDataempData")
 
   const handleDelete = async () => {
     try {

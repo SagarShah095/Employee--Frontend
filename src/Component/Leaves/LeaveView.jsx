@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "../Dashboard/AdminSidebar";
 import Navbar from "../Dashboard/Navbar";
 import axios from "axios";
-import { Loader } from "lucide-react";
+import Loader from "../Loader";
 
 const LeaveView = () => {
   const [leaveData, setLeaveData] = useState([]);
   const [approvedLeaves, setApprovedLeaves] = useState([]);
   const [rejectedLeaves, setRejectedLeaves] = useState([]);
-  const [viewType, setViewType] = useState("pending"); // "pending" | "approved" | "rejected"
-  const [loading, setLoading] =useState(false)
+  const [viewType, setViewType] = useState("pending");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLeaveData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/leave/", {
+        const response = await axios.get("http://localhost:4000/api/leave/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -39,24 +39,21 @@ const LeaveView = () => {
         } else {
           alert("Failed to fetch leave data. Please try again.");
         }
-      setLoading(false)
-
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching leave data:", error);
       }
-      setLoading(false)
-
+      setLoading(false);
     };
-     fetchLeaveData();
+    fetchLeaveData();
   }, []);
 
   const handleApprove = async (id) => {
-    console.log("Approving leave ID:", id);
-      setLoading(true)
+    setLoading(true);
 
     try {
       const res = await axios.put(
-        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `http://localhost:4000/api/leave/${id}`,
         { status: "Approved" },
         {
           headers: {
@@ -74,21 +71,19 @@ const LeaveView = () => {
       } else {
         alert("Failed to approve leave.");
       }
-      setLoading(false)
-
+      setLoading(false);
     } catch (error) {
       console.error("Error approving leave:", error);
       alert("Error approving leave.");
     }
-      setLoading(false)
-
+    setLoading(false);
   };
 
   const handleReject = async (id) => {
-      setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.put(
-        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `http://localhost:4000/api/leave/${id}`,
         { status: "Rejected" },
         {
           headers: {
@@ -105,14 +100,12 @@ const LeaveView = () => {
       } else {
         alert("Failed to reject leave.");
       }
-      setLoading(false)
-
+      setLoading(false);
     } catch (error) {
       console.error("Error rejecting leave:", error);
       alert("Error rejecting leave.");
     }
-      setLoading(false)
-
+    setLoading(false);
   };
 
   const getDataToShow = () => {
@@ -121,10 +114,8 @@ const LeaveView = () => {
     return leaveData;
   };
 
-
   return (
     <div>
-      {loading && <Loader/>}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100 min-h-screen">
@@ -134,6 +125,7 @@ const LeaveView = () => {
             <h1 className="font-semibold text-xl">Manage Leaves</h1>
           </div>
 
+          {loading && <Loader />}
           {/* Filter Buttons */}
           <div className="flex justify-between items-center p-4">
             <input

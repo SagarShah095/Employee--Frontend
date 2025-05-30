@@ -1,84 +1,77 @@
-// src/context/AuthContext.js
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
+  // 🔥 Initialize user state from localStorage
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        console.log("Stored token:", token);
+  const verifyUser = useCallback(async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
 
-        if (!token) {
-          console.log("No token found");
-          // setUser(null);
-          return;
-        }
-
-        const userFromStorage = JSON.parse(localStorage.getItem("user"));
-        const role = userFromStorage?.role;
-        const userId = userFromStorage?._id;
-
-        if (!role || !userId) {
-          console.log("User or role missing in localStorage");
-          // setUser(null);
-          return;
-        }
-
-        let endpoint = "";
-        if (role === "admin") {
-          endpoint = `${url}/api/auth/verify`;
-        } else if (role === "employee") {
-          endpoint = `${url}/api/employee/verify/${userId}`;
-        } else {
-          console.log("Unknown role");
-          setUser(null);
-          return;
-        }
-
-        console.log("Verifying via:", endpoint);
-
-        const response = await axios.get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.data.success) {
-          setUser(response.data.user);
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-        } else {
-          console.log("Verification failed from server");
-          // setUser(null);
-        }
-      } catch (error) {
-        console.log(
-          "Verify user error:",
-          error.response?.data || error.message
-        );
-        // setUser(null);
-      } finally {
-        setLoading(false);
+      // ✅ Check for missing token or user
+      if (!token || !storedUser) {
+        console.warn("No token or user found in localStorage during verifyUser.");
+        setLoading(false); // Instead of logout, just end loading
+        return;
       }
-    };
 
-    verifyUser();
+      const parsedUser = JSON.parse(storedUser);
+      const { role, _id: userId } = parsedUser;
+
+      if (!role || !userId) {
+        console.warn("Invalid user data in localStorage during verifyUser.");
+        setLoading(false);
+        return;
+      }
+
+      let endpoint = "";
+      if (role === "admin") {
+        endpoint = `${url}/api/auth/verify`;
+      } else if (role === "employee") {
+        endpoint = `${url}/api/employee/verify/${userId}`;
+      } else {
+        console.warn("Unknown user role:", role);
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data.success && response.data.user) {
+        setUser(response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log("User verified successfully:", response.data.user);
+      } else {
+        console.warn("Verification failed from server.");
+        logout();
+      }
+    } catch (error) {
+      console.error("Error verifying user:", error.response?.data || error.message);
+      logout();
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
+    if (token) {
+      localStorage.setItem("token", token);
+    }
   };
 
   const logout = () => {
@@ -87,8 +80,12 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
 
+  useEffect(() => {
+    verifyUser();
+  }, [verifyUser]);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, verifyUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -17,9 +17,8 @@ const LeaveAdd = () => {
 
   const [redAlert, setRedAlert] = useState(false);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
-  console.log(empData, "empData");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +30,6 @@ const LeaveAdd = () => {
           },
         });
         if (response.data.success) {
-          console.log(response.data.Emp, "response data");
           setEmpData(response.data.Emp);
         }
         setLoading(false);
@@ -51,7 +49,6 @@ const LeaveAdd = () => {
     }));
   };
 
-  console.log(leave, "leave state");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +59,7 @@ const LeaveAdd = () => {
     if (leave.toDate > leave.fromDate) {
       try {
         const response = await axios.post(
-          "https://employee-backend-q7hn.onrender.com/api/leave/add",
+          "http://localhost:4000/api/leave/add",
           {
             empId: leave.empId,
             emp_name: leave.emp_name,
@@ -76,8 +73,6 @@ const LeaveAdd = () => {
             },
           }
         );
-        // const response = await response.json();
-        console.log(response?.data?.success, "response from leave add");
         if (response?.data?.success) {
           alert("Leave applied successfully!");
           setLeave({

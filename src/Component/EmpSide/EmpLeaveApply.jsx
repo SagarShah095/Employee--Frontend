@@ -10,8 +10,8 @@ const LeaveAdd = () => {
   const [loading, setLoading] = useState(false);
   const [empData, setEmpData] = useState(null); // ✅ Actual fetched employee data
   const [leave, setLeave] = useState({
-    emp_id: "",
-    emp_name: "",
+    emp_id: user?.emp_id || "",
+    emp_name: user?.emp_name || "",
     leavetype: "",
     fromDate: "",
     toDate: "",
@@ -24,7 +24,7 @@ const LeaveAdd = () => {
       if (!user?._id) return;
       setLoading(true);
       try {
-        const res = await axios.get(`https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`, {
+        const res = await axios.get(`http://localhost:4000/api/employee/${user?._id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         if (res.data.success) {
@@ -64,7 +64,7 @@ const LeaveAdd = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://employee-backend-q7hn.onrender.com/api/leave/add",
+        "http://localhost:4000/api/leave/add",
         leave,
         {
           headers: {

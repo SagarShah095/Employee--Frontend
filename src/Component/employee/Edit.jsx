@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const Edit = () => {
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +55,6 @@ const Edit = () => {
     setEdit((prev) => ({ ...prev, [name]: value }));
   };
 
-  console.log(edit, "++++++");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

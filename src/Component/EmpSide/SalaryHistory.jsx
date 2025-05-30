@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/authContext";
 import { Loader } from "lucide-react";
 
 const SalaryHistory = () => {
-  const URL = "https://employee-backend-q7hn.onrender.com";
+  const URL = "http://localhost:4000";
   const { user } = useAuth();
   const [salaryHistory, setSalaryHistory] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,6 @@ const SalaryHistory = () => {
       }
       try {
         const response = await axios.get(`${URL}/api/salary`);
-        console.log("Salary History Response:", response.data);
         if (response.data.success) {
           setSalaryHistory(response.data.data);
         } else {
@@ -36,15 +35,12 @@ const SalaryHistory = () => {
     fetchSalaryHistory();
   }, [user]);
 
-  console.log("User:", user);
-  console.log("Full Salary History:", salaryHistory);
 
   // ✅ Correct Filter only user's department and emp_name match
   const filteredData = salaryHistory.filter(
     (data) => data.mainEmpId === user?.emp_id
   );
 
-  console.log("Filtered Salary Data for User Dept & Name:", filteredData);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">

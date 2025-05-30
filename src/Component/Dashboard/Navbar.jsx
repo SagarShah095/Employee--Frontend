@@ -8,7 +8,6 @@ const Navbar = () => {
     window.location.href = "/login";
   };
 
-  console.log(user, "user");
 
   return (
     <div className="bg-teal-600 text-white px-6 py-4 flex justify-between items-center w-full">

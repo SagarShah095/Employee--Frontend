@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 
 const EmployeeView = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [selectedemp, setSelectedEmp] = useState({});
   const { id } = useParams();
@@ -45,7 +45,6 @@ const EmployeeView = () => {
         const response = await axios.get(`${url}/api/punch`);
 
         if (response?.data?.success) {
-          console.log("Data Get Successfully");
 
           const punchData = Array.isArray(response.data.data)
             ? response.data.data

@@ -85,9 +85,8 @@ const Attendance = () => {
   const [currentEdit, setCurrentEdit] = useState(null); // object of row being edited or null
   const [showUser, setShowUser] = useState({});
 
-  console.log(showUser, "showUsershowUsershowUser");
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -105,7 +104,6 @@ const Attendance = () => {
     fetchEmployees();
   }, []);
 
-  console.log(empData, "empDataempDataempData");
 
   useEffect(() => {
     const fetchPunches = async () => {
@@ -294,7 +292,6 @@ const Attendance = () => {
 
   const matchTotalData = empData.filter((data) => data?.emp_id === showUser);
 
-  console.log(matchTotalData[0]?.emp_name, "matchTotalDatamatchTotalDatamatchTotalData");
 
   return (
     <div className="flex">

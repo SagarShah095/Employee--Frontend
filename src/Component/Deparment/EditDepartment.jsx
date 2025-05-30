@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const EditDepartment = () => {
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,6 @@ const EditDepartment = () => {
 
   const navigate = useNavigate();
 
-    // console.log(department, "++++++")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +58,6 @@ const EditDepartment = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log("department data");
       const response = await axios.put(
         `${url}/api/department/${id}`,
         department,
@@ -70,7 +68,6 @@ const EditDepartment = () => {
         }
       );
       if (response.data.success) {
-        console.log(response.data, "Department updated successfully");
         alert("Department updated successfully");
         navigate("/admin-dashboard/departments");
       }

@@ -18,7 +18,7 @@ const SummaryCard = ({ icon, text }) => {
     if (!token) return setCount(0);
     try {
       const response = await axios.get(
-        "https://employee-backend-q7hn.onrender.com/api/employee/count",
+        "http://localhost:4000/api/employee/count",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const SummaryCard = ({ icon, text }) => {
     if (!token) return;
     try {
       const response = await axios.get(
-        "https://employee-backend-q7hn.onrender.com/api/punch/attendance-summary",
+        "http://localhost:4000/api/punch/attendance-summary",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,8 +46,8 @@ const SummaryCard = ({ icon, text }) => {
       if (response.data.success) {
         setAttendanceSummary({
           present: response.data.summary.present,
-          onLeave: response.data.summary.onLeave,
-          late: response.data.summary.late,
+          onLeave: response.data.summary.onLeave || 0,
+          late: response.data.summary.late || 0,
         });
       }
     } catch (error) {
@@ -60,7 +60,6 @@ const SummaryCard = ({ icon, text }) => {
     fetchAttendanceSummary();
   }, []);
 
-  // Calculate Absent dynamically
   const absent = count - attendanceSummary.present;
 
   return (
@@ -90,7 +89,9 @@ const SummaryCard = ({ icon, text }) => {
 
       {/* Attendance Summary for Today */}
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2 ml-1">Today's Attendance</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2 ml-1">
+          Today's Attendance
+        </h2>
         <p className="text-gray-500 mb-6 ml-1">
           Number of employees who are present, absent, on leave, or late today
         </p>

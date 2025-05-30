@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 
 const EmpProfile = () => {
   const { user } = useAuth();
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [selectedEmp, setSelectedEmp] = useState(null);
   const [loading, setLoading] = useState(true); // start with loading true
@@ -15,7 +15,6 @@ const EmpProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!user?._id) return; // ensure user is ready
-      console.log("Fetching employee data...");
       setLoading(true);
       try {
         const response = await axios.get(`${url}/api/employee/${user?._id}`, {
@@ -23,7 +22,6 @@ const EmpProfile = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response.data, "response in emp profile");
         if (response.data.success) {
           setSelectedEmp(response.data.emp);
         } else {
@@ -40,11 +38,12 @@ const EmpProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
-      {loading && <Loader />}
       <Navbar />
       <div className="flex">
         <EmployeeSidebar />
         <div className="flex-1 p-6">
+          {loading && <Loader />}
+
           <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
             <div className="flex items-center gap-6">
               <img
@@ -67,11 +66,15 @@ const EmpProfile = () => {
             <div className="mt-8 space-y-4 text-gray-700 text-base">
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 <div>
-                  <span className="font-semibold text-gray-900">Department:</span>
+                  <span className="font-semibold text-gray-900">
+                    Department:
+                  </span>
                   <p>{selectedEmp?.Dept}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">Designation:</span>
+                  <span className="font-semibold text-gray-900">
+                    Designation:
+                  </span>
                   <p>{selectedEmp?.Des}</p>
                 </div>
                 <div>
@@ -79,7 +82,9 @@ const EmpProfile = () => {
                   <p>₹{selectedEmp?.Salary}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">Employee ID:</span>
+                  <span className="font-semibold text-gray-900">
+                    Employee ID:
+                  </span>
                   <p>{selectedEmp?.emp_id}</p>
                 </div>
               </div>

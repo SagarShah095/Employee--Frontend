@@ -6,7 +6,7 @@ import axios from "axios";
 import Loader from "../Loader";
 
 const AddDipartment = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,6 @@ const AddDipartment = () => {
         }
       );
       if (response.data.success) {
-        console.log(response.data, "Department added successfully");
         navigate("/admin-dashboard/departments");
         setDepartment({
           dep_name: "",

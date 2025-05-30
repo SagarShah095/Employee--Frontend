@@ -6,18 +6,16 @@ import { useAuth } from "../../Context/authContext";
 import Loader from "../Loader";
 
 const EmployeeDashboard = () => {
-  const { user } = useAuth(); // user should contain emp_id
-  const url = "https://employee-backend-q7hn.onrender.com";
-
+  const { user } = useAuth();
+  const url = "http://localhost:4000";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [salary, setSalary] = useState({});
 
-  // Fetch salary data when user.emp_id is available
   useEffect(() => {
     const fetchSalaryData = async () => {
-      if (!user?.emp_id) return; // wait for user.emp_id
+      if (!user?.emp_id) return;
 
       setLoading(true);
       try {
@@ -26,6 +24,7 @@ const EmployeeDashboard = () => {
           const matchedSalary = response.data.data.find(
             (sal) => sal.mainEmpId === user.emp_id
           );
+          console.log(matchedSalary);
           setSalary(matchedSalary || {});
         } else {
           console.log("Salary Error in Dashboard");
@@ -38,27 +37,26 @@ const EmployeeDashboard = () => {
     };
 
     fetchSalaryData();
-  }, []); // dependency on user.emp_id
+  }, []);
 
-  // Fetch employee and attendance data when user.emp_id is available
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        // Fetch all employees
-        const empRes = await axios.get(`${url}/api/employee/`);
+        const empRes = await axios.get(`${url}/api/employee`);
         if (empRes.data.success) {
-          const empList = empRes.data.Emp;
-          const matchedEmp = empList.find((emp) => emp.emp_id === user.emp_id);
+          const empList = empRes?.data?.Emp;
+          const matchedEmp = empList.find(
+            (emp) => emp?.emp_id === user?.emp_id
+          );
           setEmployeeData(matchedEmp || {});
         }
 
-        // Fetch attendance records
         const attRes = await axios.get(`${url}/api/punch`);
         if (attRes.data.success) {
-          const punchData = Array.isArray(attRes.data.data)
-            ? attRes.data.data
-            : [attRes.data.data];
+          const punchData = Array.isArray(attRes?.data?.data)
+            ? attRes?.data?.data
+            : [attRes?.data?.data];
 
           const filtered = punchData.filter(
             (item) => item.emp_id === user.emp_id
@@ -80,10 +78,9 @@ const EmployeeDashboard = () => {
     if (user?.emp_id) {
       fetchDashboardData();
     }
-  }, []); // dependency on user.emp_id
+  }, [user]);
 
-  const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-GB");
+  const formatDate = (date) => new Date(date).toLocaleDateString("en-GB");
 
   const formatTime = (time) =>
     new Date(time).toLocaleTimeString("en-US", {
@@ -111,7 +108,6 @@ const EmployeeDashboard = () => {
       <div className="flex">
         <EmployeeSidebar />
         <div className="w-full p-6">
-          {/* Profile Section */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-2xl font-bold mb-4">
               Welcome, {employeeData?.emp_name || "Employee"}
@@ -127,11 +123,22 @@ const EmployeeDashboard = () => {
                 className="w-28 h-28 object-cover rounded-full"
               />
               <div className="space-y-2">
-                <p><strong>Employee ID:</strong> {employeeData?.emp_id}</p>
-                <p><strong>Department:</strong> {employeeData?.Dept}</p>
-                <p><strong>Gender:</strong> {employeeData?.Gen}</p>
-                <p><strong>DOB:</strong> {formatDate(employeeData?.dob)}</p>
-                <p><strong>Salary:</strong> {salary?.amount ? `$${salary.amount}` : "N/A"}</p>
+                <p>
+                  <strong>Employee ID:</strong> {employeeData?.emp_id}
+                </p>
+                <p>
+                  <strong>Department:</strong> {employeeData?.Dept}
+                </p>
+                <p>
+                  <strong>Gender:</strong> {employeeData?.Gen}
+                </p>
+                <p>
+                  <strong>DOB:</strong> {formatDate(employeeData?.dob)}
+                </p>
+                <p>
+                  <strong>Salary:</strong>{" "}
+                  {salary?.amount ? `$${salary.amount}` : "N/A"}
+                </p>
               </div>
             </div>
           </div>
@@ -155,7 +162,9 @@ const EmployeeDashboard = () => {
                       <tr key={index} className="border-t">
                         <td className="py-2 px-4">{formatDate(att.PunchIn)}</td>
                         <td className="py-2 px-4">{formatTime(att.PunchIn)}</td>
-                        <td className="py-2 px-4">{formatTime(att.PunchOut)}</td>
+                        <td className="py-2 px-4">
+                          {formatTime(att.PunchOut)}
+                        </td>
                         <td className="py-2 px-4">
                           {calculateTotalTime(att.PunchIn, att.PunchOut)}
                         </td>

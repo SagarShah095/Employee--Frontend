@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddSalary = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -54,7 +54,9 @@ const AddSalary = () => {
       }
       setLoading(false);
     };
-    fetchData();
+    if (id) {
+      fetchData();
+    }
   }, [id]);
 
   const handleDepart = async (e) => {
@@ -62,11 +64,14 @@ const AddSalary = () => {
     setEdit((prev) => ({ ...prev, Dept: value }));
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/salary/department/${value}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${url}/api/salary/department/${value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.data.success) {
         setEmployees(response.data.employees);

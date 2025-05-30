@@ -10,7 +10,7 @@ import { Loader } from "lucide-react";
 const EmpLeave = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const URL = "https://employee-backend-q7hn.onrender.com";
+  const URL = "http://localhost:4000";
 
   const [data, setData] = useState([]);
 
@@ -19,7 +19,6 @@ const EmpLeave = () => {
       setLoading(true);
       try {
         const response = await axios.get(`${URL}/api/leave`);
-        console.log(response.data.data, "response in leave");
         if (response.data.success) {
           setData(response.data.data);
         } else {
@@ -35,12 +34,8 @@ const EmpLeave = () => {
     fetchData();
   }, [user]);
 
-  console.log(data, "data in leave");
-
-  const userData = data.filter((item) => item.empId === user?.emp_id);
-
-  // console.log(userData, "userData in leave");
-
+  const userData = data?.filter((item) => item?.emp_id === user?.emp_id);
+  console.log(data, "U Data");
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
       {loading && <Loader />}
