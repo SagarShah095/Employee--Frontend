@@ -26,6 +26,13 @@ import EmpLeaveApply from "./Component/EmpSide/EmpLeaveApply";
 import SalaryHistory from "./Component/EmpSide/SalaryHistory";
 import Attendance from "./Component/Attendance/Attendance";
 import EmpPunch from "./Component/EmpSide/EmpPunch";
+import Project from "./Pages/Project";
+import AddProject from "./Pages/AddProject";
+import ProjectDetail from "./Pages/ProjectDetails";
+import EditProject from "./Pages/EditProject";
+import EmployeeProjectDetail from "./Pages/EmpProjectDetail";
+import EmployeeSingleProjectDetail from "./Pages/EmployeeSingleProjectDetail";
+import EmpNotifications from "./Pages/EmpNotification";
 
 function App() {
   const [department, setDepartment] = useState([]);
@@ -111,13 +118,38 @@ function App() {
         />
         <Route path="/admin-dashboard/punch" element={<Attendance />} />
 
+        <Route path="/admin-dashboard/project" element={<Project />} />
+        <Route
+          path="/admin-dashboard/project/edit/:id"
+          element={<EditProject />}
+        />
+        <Route
+          path="/admin-dashboard/project/:id"
+          element={<ProjectDetail />}
+        />
+        <Route path="/admin-dashboard/project/new" element={<AddProject />} />
+
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+        <Route
+          path="/employee/my-project"
+          element={<EmployeeProjectDetail />}
+        />
+        
+
+        <Route
+          path="/employee/my-project/:id"
+          element={<EmployeeSingleProjectDetail />}
+        />
         <Route path="/employee/profile" element={<EmpProfile />} />
         <Route path="/employee/change-password" element={<EmpChangePass />} />
         <Route path="/employee/leave-history" element={<EmpLeave />} />
         <Route path="/employee/apply-leave" element={<EmpLeaveApply />} />
         <Route path="/employee/salary-history" element={<SalaryHistory />} />
         <Route path="/employee/punch" element={<EmpPunch />} />
+          <Route
+          path="/employee/notification"
+          element={<EmpNotifications />}
+        />
       </Routes>
     </BrowserRouter>
   );

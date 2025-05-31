@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -197,7 +197,6 @@ const EmployeeDashboard = () => {
                         <td className="py-2 px-4">
                           {formatTime(att.PunchOut)}
                         </td>
-                        {console.log(attendanceData, "attemce")}
                         <td className="py-2 px-4">
                           {calculateTotalTime(
                             att.PunchIn,

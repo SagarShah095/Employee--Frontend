@@ -57,6 +57,11 @@ const AdminSidebar = () => {
           <span>Salary</span>
         </NavLink>
 
+        <NavLink to="/admin-dashboard/project" className={navLinkClass}>
+          <FaMoneyBillWave />
+          <span>Projecte</span>
+        </NavLink>
+
         {/* <NavLink to="/admin-dashboard/setting" className={navLinkClass}>
           <IoSettingsSharp />
           <span>Setting</span>

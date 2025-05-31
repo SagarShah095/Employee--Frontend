@@ -85,7 +85,7 @@ const Attendance = () => {
   const [currentEdit, setCurrentEdit] = useState(null); // object of row being edited or null
   const [showUser, setShowUser] = useState({});
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -398,6 +398,7 @@ const Attendance = () => {
                     key={row.emp_id}
                     className="border border-gray-300 hover:bg-gray-50"
                   >
+                    {console.log(row)}
                     <td className="border border-gray-300 px-4 py-2">
                       {row.emp_id}
                     </td>

@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddSalary = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -164,7 +164,7 @@ const AddSalary = () => {
             <Navbar />
           </div>
           <div className="m-10 p-5 rounded-md shadow-lg bg-white">
-      {loading && <Loader />}
+            {loading && <Loader />}
             <form onSubmit={handleSubmit}>
               <h1 className="text-2xl font-bold">Add Salary</h1>
               <div className="grid grid-cols-2 gap-5 mt-5">
