@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Add = ({ addEmp, setAddEmp }) => {
   const [loading, setLoading] = useState(false);
-  const url = "http://localhost:4000";
+  const url = "https://employee-backend-q7hn.onrender.com";
   const navigate = useNavigate();
 
   const fieldLabels = {

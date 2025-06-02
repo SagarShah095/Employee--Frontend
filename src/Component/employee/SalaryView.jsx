@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 
 const SalaryView = () => {
-  const url = "http://localhost:4000";
+  const url = "https://employee-backend-q7hn.onrender.com";
   const [salary, setSalary] = useState([]);
   const [loading, setLoading] = useState(false);
 

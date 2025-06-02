@@ -17,7 +17,7 @@ const EmpLeave = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const URL = "http://localhost:4000";
+  const URL = "https://employee-backend-q7hn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {

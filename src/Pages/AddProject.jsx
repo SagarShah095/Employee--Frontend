@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AddProject = () => {
-  const url = "http://localhost:4000/api/projects";
+  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const AddProject = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/employee", {
+      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))

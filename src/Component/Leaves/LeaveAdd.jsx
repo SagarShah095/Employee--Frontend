@@ -17,7 +17,7 @@ const LeaveAdd = () => {
 
   const [redAlert, setRedAlert] = useState(false);
 
-  const url = "http://localhost:4000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const LeaveAdd = () => {
     if (leave.toDate > leave.fromDate) {
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/leave/add",
+          "https://employee-backend-q7hn.onrender.com/api/leave/add",
           {
             empId: leave.empId,
             emp_name: leave.emp_name,

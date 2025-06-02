@@ -8,8 +8,10 @@ import {
   History,
   FilePlus,
   LayoutDashboard,
+  Bell,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { FaFonticons, FaFonticonsFi } from "react-icons/fa";
 
 
 const SidebarItem = ({ to, icon, label, end }) => (
@@ -70,6 +72,11 @@ const EmployeeSidebar = () => {
             to="/employee/salary-history"
             icon={<Wallet />}
             label="Salary History"
+          />
+           <SidebarItem
+            to="/employee/notification"
+            icon={<Bell />}
+            label="Notification"
           />
         </nav>
       </aside>

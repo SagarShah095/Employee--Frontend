@@ -4,52 +4,142 @@ import axios from "axios";
 import Navbar from "../Component/Dashboard/Navbar";
 import EmployeeSidebar from "../Component/EmpSide/EmployeeSidebar";
 import { useAuth } from "../Context/authContext";
+import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:4000"); // Backend URL
+const socket = io("https://employee-backend-q7hn.onrender.com");
 
 function EmpNotifications() {
-const {user} = useAuth()
+  const { user } = useAuth();
+  const userId = user?._id;
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const fetchNotifications = async () => {
+    if (!userId) return;
+    try {
+      const res = await axios.get(
+        `https://employee-backend-q7hn.onrender.com/api/notifications/${userId}`
+      );
+      setNotifications(res.data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUnreadCount = async () => {
+    if (!userId) return;
+    try {
+      const res = await axios.get(
+        `https://employee-backend-q7hn.onrender.com/api/notifications/unread-count/${userId}`
+      );
+      setUnreadCount(res.data.count);
+    } catch (err) {
+      console.error("Error fetching unread count:", err);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    if (!userId) return;
+    try {
+      const res = await axios.put(
+        `https://employee-backend-q7hn.onrender.com/api/notifications/mark-all-read/${userId}`
+      );
+      console.log(res.data);
+      await fetchNotifications();
+      await fetchUnreadCount();
+    } catch (err) {
+      console.error("Error marking notifications as read:", err);
+    }
+  };
 
   useEffect(() => {
-    // Load initial notifications
-    axios
-      .get(`http://localhost:4000/api/notification/${user?._id}`)
-      .then((res) => setNotifications(res.data));
+    if (userId) {
+      fetchNotifications();
+      fetchUnreadCount();
+    }
 
-    // Listen for real-time events
     socket.on("newProjectNotification", (data) => {
-      setNotifications((prev) => [
-        { message: data.message, createdAt: new Date(), type: "new_project" },
-        ...prev,
-      ]);
+      console.log("New notification received via socket:", data);
+      fetchNotifications();
+      fetchUnreadCount();
     });
 
     return () => {
       socket.off("newProjectNotification");
     };
-  }, []);
+  }, [userId]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
+        <div className="flex-1 p-8 overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4">🔔 Notifications</h2>
 
-        <div className="flex-1 p-8 overflow-y-auto"></div>
-        <button>🔔 ({notifications.length})</button>
-        <div>
-          <button>🔔 ({notifications.length})</button>
-          <ul>
-            {notifications.map((n, i) => (
-              <li key={i}>
-                {n.message} - {new Date(n.createdAt).toLocaleTimeString()}
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center mb-4">
+            <button
+              onClick={markAllAsRead}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Mark All as Read
+            </button>
+            {unreadCount > 0 && (
+              <span className="ml-4 bg-red-500 text-white px-3 py-1 rounded-full">
+                {unreadCount} Unread
+              </span>
+            )}
+          </div>
+
+          {loading ? (
+            <p>Loading notifications...</p>
+          ) : notifications.length === 0 ? (
+            <p className="text-gray-500 italic">No notifications available.</p>
+          ) : (
+            <ul>
+              {notifications.map((n, index) => (
+                <li
+                  key={index}
+                  className={`border-b p-3 my-2 rounded ${
+                    !n.read ? "font-[800]" : "font-[500]"
+                  }`}
+                >
+                  <div
+                    className=" cursor-pointer inline-block"
+                    onClick={async () => {
+                      try {
+                        await axios.put(
+                          `https://employee-backend-q7hn.onrender.com/api/notifications/mark-read/${n._id}`
+                        );
+                        setNotifications((prev) =>
+                          prev.map((item) =>
+                            item._id === n._id ? { ...item, read: true } : item
+                          )
+                        );
+                        navigate(`/employee/my-project/${n?.projectId}`);
+                      } catch (err) {
+                        console.error(
+                          "Error marking notification as read:",
+                          err
+                        );
+                      }
+                    }}
+                  >
+                    {n.message}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {new Date(n.createdAt).toLocaleString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
-      s
     </div>
   );
 }

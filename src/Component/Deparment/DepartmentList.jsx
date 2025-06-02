@@ -12,7 +12,7 @@ const DepartmentList = ({ setDepartment, department }) => {
   const [loading, setLoading] = useState(false);
   const [depLoading, setDepLoading] = useState(false);
 
-  const url = "http://localhost:4000";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {

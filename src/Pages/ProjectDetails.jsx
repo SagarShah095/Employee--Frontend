@@ -14,7 +14,7 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
-  const url = "http://localhost:4000/api/projects";
+  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
   const token = localStorage.getItem("token");
 
   const [employees, setEmployees] = useState([]);
@@ -28,7 +28,7 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/employee", {
+      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -124,7 +124,7 @@ const ProjectDetail = () => {
                   className="flex items-center gap-4 bg-gray-100 p-2 rounded shadow-sm hover:shadow-md transition"
                 >
                   <img
-                    src={`http://localhost:4000/${emp.Img}`}
+                    src={`https://employee-backend-q7hn.onrender.com/${emp.Img}`}
                     alt={emp.emp_name}
                     className="w-12 h-12 rounded-full object-cover border"
                   />

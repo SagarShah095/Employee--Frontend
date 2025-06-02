@@ -134,7 +134,6 @@ function App() {
           path="/employee/my-project"
           element={<EmployeeProjectDetail />}
         />
-        
 
         <Route
           path="/employee/my-project/:id"
@@ -146,10 +145,7 @@ function App() {
         <Route path="/employee/apply-leave" element={<EmpLeaveApply />} />
         <Route path="/employee/salary-history" element={<SalaryHistory />} />
         <Route path="/employee/punch" element={<EmpPunch />} />
-          <Route
-          path="/employee/notification"
-          element={<EmpNotifications />}
-        />
+        <Route path="/employee/notification" element={<EmpNotifications />} />
       </Routes>
     </BrowserRouter>
   );

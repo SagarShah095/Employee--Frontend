@@ -15,7 +15,7 @@ const EditProject = () => {
     technologies: [],
     assignedEmployees: [],
   });
-  const url = "http://localhost:4000/api/projects";
+  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
 
   useEffect(() => {
     axios
