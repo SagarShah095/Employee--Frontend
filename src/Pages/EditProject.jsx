@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import AdminSidebar from "../Component/Dashboard/AdminSidebar";
+import Navbar from "../Component/Dashboard/Navbar";
 
 const EditProject = () => {
   const { id } = useParams();
@@ -15,7 +17,7 @@ const EditProject = () => {
     technologies: [],
     assignedEmployees: [],
   });
-  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
+  const url = "http://localhost:4000/api/projects";
 
   useEffect(() => {
     axios
@@ -69,112 +71,122 @@ const EditProject = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-white shadow-md rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
-        Edit Project
-      </h2>
+    <div className="flex min-h-screen bg-gray-100">
+      <AdminSidebar />
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-semibold">Title</label>
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
+      <div className="flex-1 flex flex-col">
+        <Navbar />
 
-        <div>
-          <label className="block font-semibold">Description</label>
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            rows="4"
-            className="w-full border px-3 py-2 rounded"
-          ></textarea>
-        </div>
+        {/* Page Content */}
+        <div className="flex justify-center p-8">
+          <div className="w-full max-w-2xl bg-white rounded-lg shadow-md  p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Create New Project
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block font-semibold">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
 
-        <div>
-          <label className="block font-semibold">Status</label>
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="Planned">Planned</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
+              <div>
+                <label className="block font-semibold">Description</label>
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  rows="4"
+                  className="w-full border px-3 py-2 rounded"
+                ></textarea>
+              </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block font-semibold">Start Date</label>
-            <input
-              type="date"
-              name="startDate"
-              value={form.startDate}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
-            />
+              <div>
+                <label className="block font-semibold">Status</label>
+                <select
+                  name="status"
+                  value={form.status}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                >
+                  <option value="Planned">Planned</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-semibold">Start Date</label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    value={form.startDate}
+                    onChange={handleChange}
+                    className="w-full border px-3 py-2 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">End Date</label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    value={form.endDate}
+                    onChange={handleChange}
+                    className="w-full border px-3 py-2 rounded"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold">
+                  Technologies (comma separated)
+                </label>
+                <input
+                  type="text"
+                  name="technologies"
+                  value={form.technologies.join(", ")}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold">
+                  Assigned Employees (IDs, comma separated)
+                </label>
+                <input
+                  type="text"
+                  name="assignedEmployees"
+                  value={form.assignedEmployees.join(", ")}
+                  onChange={handleChange}
+                  className="w-full border px-3 py-2 rounded"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded hover:from-blue-700 hover:to-blue-800 transition"
+              >
+                💾 Save Changes
+              </button>
+            </form>
+
+            <button
+              onClick={() => navigate(`/admin-dashboard/project/${id}`)}
+              className="mt-4 w-full bg-gray-300 text-black py-2 rounded hover:bg-gray-400"
+            >
+              🔙 Cancel
+            </button>
           </div>
-          <div>
-            <label className="block font-semibold">End Date</label>
-            <input
-              type="date"
-              name="endDate"
-              value={form.endDate}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
-            />
-          </div>
         </div>
-
-        <div>
-          <label className="block font-semibold">
-            Technologies (comma separated)
-          </label>
-          <input
-            type="text"
-            name="technologies"
-            value={form.technologies.join(", ")}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">
-            Assigned Employees (IDs, comma separated)
-          </label>
-          <input
-            type="text"
-            name="assignedEmployees"
-            value={form.assignedEmployees.join(", ")}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded hover:from-blue-700 hover:to-blue-800 transition"
-        >
-          💾 Save Changes
-        </button>
-      </form>
-
-      <button
-        onClick={() => navigate(`/admin-dashboard/project/${id}`)}
-        className="mt-4 w-full bg-gray-300 text-black py-2 rounded hover:bg-gray-400"
-      >
-        🔙 Cancel
-      </button>
+      </div>
     </div>
   );
 };

@@ -85,7 +85,7 @@ const Attendance = () => {
   const [currentEdit, setCurrentEdit] = useState(null); // object of row being edited or null
   const [showUser, setShowUser] = useState({});
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -185,7 +185,7 @@ const Attendance = () => {
     PunchIn: formatDateTime(row.PunchIn),
     PunchOut: formatDateTime(row.PunchOut),
     TotalTime: getTotalTime(row.PunchIn, row.PunchOut),
-    Status: row.status,
+    // Status: row.status,
     Notes: `${row.isLate ? "Late " : ""}${
       row.isEarly ? "| Early Leave" : ""
     }`.trim(),
@@ -300,7 +300,7 @@ const Attendance = () => {
             Employee Attendance
           </h1>
 
-      {loading && <Loader />}
+          {loading && <Loader />}
           <div className="bg-white p-4 rounded-lg shadow mb-6">
             <div className="flex gap-4 flex-wrap items-end">
               <div className="flex-1 min-w-[200px] flex flex-col">
@@ -362,7 +362,7 @@ const Attendance = () => {
                   <th className="border border-gray-300 px-4 py-2">
                     Punch Out
                   </th>
-                  <th className="border border-gray-300 px-4 py-2">Status</th>
+                  {/* <th className="border border-gray-300 px-4 py-2">Status</th> */}
                   <th className="border border-gray-300 px-4 py-2">
                     Total Time
                   </th>
@@ -421,9 +421,10 @@ const Attendance = () => {
                     >
                       {formatDateTime(row.PunchOut)}
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">
+                    {/* <td className="border border-gray-300 px-4 py-2">
                       {row.status}
-                    </td>
+                      {console.log(row)}
+                    </td> */}
                     <td className="border border-gray-300 px-4 py-2">
                       {getTotalTime(row.PunchIn, row.PunchOut)}
                     </td>

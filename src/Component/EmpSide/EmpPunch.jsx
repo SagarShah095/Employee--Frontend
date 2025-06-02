@@ -17,7 +17,7 @@ const EmpPunch = () => {
   const [lunchInTime, setLunchInTime] = useState(null);
   const [lunchOutTime, setLunchOutTime] = useState(null);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchData = async () => {

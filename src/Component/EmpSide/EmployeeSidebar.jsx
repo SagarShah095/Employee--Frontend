@@ -13,7 +13,6 @@ import {
 import { NavLink } from "react-router-dom";
 import { FaFonticons, FaFonticonsFi } from "react-icons/fa";
 
-
 const SidebarItem = ({ to, icon, label, end }) => (
   <NavLink
     to={to}
@@ -47,7 +46,7 @@ const EmployeeSidebar = () => {
             icon={<CalendarDays />}
             label="Attendance"
           />
-            <SidebarItem
+          <SidebarItem
             to="/employee/my-project"
             icon={<History />}
             label="My Project"
@@ -73,7 +72,7 @@ const EmployeeSidebar = () => {
             icon={<Wallet />}
             label="Salary History"
           />
-           <SidebarItem
+          <SidebarItem
             to="/employee/notification"
             icon={<Bell />}
             label="Notification"
@@ -85,4 +84,3 @@ const EmployeeSidebar = () => {
 };
 
 export default EmployeeSidebar;
-

@@ -4,7 +4,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   // 🔥 Initialize user state from localStorage
   const [user, setUser] = useState(() => {

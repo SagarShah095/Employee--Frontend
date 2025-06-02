@@ -15,7 +15,7 @@ const Project = () => {
   const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   // Fetch Projects
   const fetchProjects = async () => {
@@ -64,14 +64,13 @@ const Project = () => {
         <Navbar />
 
         <div className="p-8">
-          {/* Delete Confirmation Modal */}
           <DeleteConfirmationModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
             onConfirm={handleConfirmDelete}
+            title="Are you sure Want to delete this ?"
           />
 
-          {/* Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-3xl font-bold">📋 Project List</h2>
             <Link

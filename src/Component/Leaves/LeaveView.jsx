@@ -3,6 +3,8 @@ import AdminSidebar from "../Dashboard/AdminSidebar";
 import Navbar from "../Dashboard/Navbar";
 import axios from "axios";
 import Loader from "../Loader";
+import * as XLSX from "xlsx";
+import ConfirmationModal from "../../shared/DeleteConfirmation";
 
 const LeaveView = () => {
   const [leaveData, setLeaveData] = useState([]);
@@ -10,12 +12,17 @@ const LeaveView = () => {
   const [rejectedLeaves, setRejectedLeaves] = useState([]);
   const [viewType, setViewType] = useState("pending");
   const [loading, setLoading] = useState(true);
+  const [modalAction, setModalAction] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [filterStartDate, setFilterStartDate] = useState("");
+  const [filterEndDate, setFilterEndDate] = useState("");
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     const fetchLeaveData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("https://employee-backend-q7hn.onrender.com/api/leave/", {
+        const response = await axios.get("http://localhost:4000/api/leave/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -53,7 +60,7 @@ const LeaveView = () => {
 
     try {
       const res = await axios.put(
-        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `http://localhost:4000/api/leave/${id}`,
         { status: "Approved" },
         {
           headers: {
@@ -83,7 +90,7 @@ const LeaveView = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `http://localhost:4000/api/leave/${id}`,
         { status: "Rejected" },
         {
           headers: {
@@ -109,69 +116,186 @@ const LeaveView = () => {
   };
 
   const getDataToShow = () => {
-    if (viewType === "approved") return approvedLeaves;
-    if (viewType === "rejected") return rejectedLeaves;
-    return leaveData;
+    let data =
+      viewType === "approved"
+        ? approvedLeaves
+        : viewType === "rejected"
+        ? rejectedLeaves
+        : leaveData;
+
+    if (filterStartDate) {
+      data = data.filter(
+        (leave) => new Date(leave.fromDate) >= new Date(filterStartDate)
+      );
+    }
+    if (filterEndDate) {
+      data = data.filter(
+        (leave) => new Date(leave.toDate) <= new Date(filterEndDate)
+      );
+    }
+    return data;
+  };
+
+  const prepareExportData = () => {
+    const data = getDataToShow().map((row) => ({
+      "Emp ID": row.empId || "-",
+      Name: row.emp_name || "-",
+      "Leave Type": row.leavetype || "-",
+      "From Date": new Date(row.fromDate).toISOString().split("T")[0],
+      "To Date": new Date(row.fromDate).toISOString().split("T")[0],
+      Description: row?.desc || "-",
+      Status: row.status || "-",
+    }));
+    return data;
+  };
+
+  const handleExcelExport = () => {
+    const exportData = prepareExportData();
+
+    if (exportData.length === 0) {
+      alert("No data to export.");
+      return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Leaves");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const blob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+
+    saveAs(blob, `Leave_Report_${viewType}.xlsx`);
+  };
+
+  const handleModalConfirm = () => {
+    if (modalAction === "approve") {
+      handleApprove(deleteId);
+    } else if (modalAction === "reject") {
+      handleReject(deleteId);
+    }
+    setShowModal(false);
+  };
+
+  const confirmDelete = (id, action) => {
+    setDeleteId(id);
+    setModalAction(action); // Set "approve" or "reject"
+    setShowModal(true);
   };
 
   return (
     <div>
       <div className="flex">
         <AdminSidebar />
-        <div className="w-full bg-gray-100 min-h-screen">
+        <div className="w-full bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
           <Navbar />
 
           <div className="flex justify-center items-center mt-4">
-            <h1 className="font-semibold text-xl">Manage Leaves</h1>
+            <h1 className="font-bold text-2xl text-teal-700 shadow-sm">
+              Manage Leaves
+            </h1>
           </div>
 
           {loading && <Loader />}
-          {/* Filter Buttons */}
+          <ConfirmationModal
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={handleModalConfirm}
+            title={`Confirm ${
+              modalAction === "approve" ? "Approval" : "Rejection"
+            }`}
+            message={`Are you sure you want to ${modalAction} this leave?`}
+            confirmLabel={modalAction === "approve" ? "Approve" : "Reject"}
+          />
+          {/* 🔥 Date filter inputs */}
           <div className="flex justify-between items-center p-4">
-            <input
-              type="text"
-              placeholder="Search by Emp ID"
-              className="p-1 border border-gray-400 rounded-md focus:outline-none"
-            />
-            <div className="gap-6 flex items-center">
+            <div className="flex gap-4 items-center">
+              <label className="text-sm">From:</label>
+              <input
+                type="date"
+                value={filterStartDate}
+                // max={new Date().toISOString().split("T")[0]}
+                onChange={(e) => setFilterStartDate(e.target.value)}
+                className="p-2 border border-gray-300 rounded-md shadow-sm hover:border-teal-500 transition"
+              />
+              <label className="text-sm">To:</label>
+              <input
+                type="date"
+                value={filterEndDate}
+                // max={new Date().toISOString().split("T")[0]}
+                onChange={(e) => setFilterEndDate(e.target.value)}
+                className="p-2 border border-gray-300 rounded-md shadow-sm hover:border-teal-500 transition"
+              />
               <button
-                className={`px-6 py-1 rounded-md text-white ${
-                  viewType === "pending" ? "bg-teal-700" : "bg-teal-600"
-                }`}
+                onClick={() => {
+                  setFilterStartDate("");
+                  setFilterEndDate("");
+                }}
+                className="px-3 py-2 border bg-gray-400 hover:bg-gray-500 text-white rounded-md transition"
+              >
+                Reset Dates
+              </button>
+            </div>
+
+            {/* 🔥 ViewType Buttons */}
+            <div className="gap-4 flex items-center">
+              <button
+                className={`px-6 py-2 rounded-full text-white font-medium ${
+                  viewType === "pending"
+                    ? "bg-teal-700 shadow-md"
+                    : "bg-teal-600 hover:bg-teal-700"
+                } transition`}
                 onClick={() => setViewType("pending")}
               >
-                View Pending
+                Pending
               </button>
               <button
-                className={`px-6 py-1 rounded-md text-white ${
-                  viewType === "approved" ? "bg-teal-700" : "bg-teal-600"
-                }`}
+                className={`px-6 py-2 rounded-full text-white font-medium ${
+                  viewType === "approved"
+                    ? "bg-teal-700 shadow-md"
+                    : "bg-teal-600 hover:bg-teal-700"
+                } transition`}
                 onClick={() => setViewType("approved")}
               >
-                View Approved
+                Approved
               </button>
               <button
-                className={`px-6 py-1 rounded-md text-white ${
-                  viewType === "rejected" ? "bg-teal-700" : "bg-teal-600"
-                }`}
+                className={`px-6 py-2 rounded-full text-white font-medium ${
+                  viewType === "rejected"
+                    ? "bg-teal-700 shadow-md"
+                    : "bg-teal-600 hover:bg-teal-700"
+                } transition`}
                 onClick={() => setViewType("rejected")}
               >
-                View Rejected
+                Rejected
+              </button>
+
+              <button
+                onClick={handleExcelExport}
+                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition shadow-md"
+              >
+                📤 Export to Excel
               </button>
             </div>
           </div>
 
-          {/* Table */}
+          {/* 🔥 Table */}
           <div className="p-4">
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white rounded-lg overflow-hidden">
+              <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
                 <thead>
-                  <tr className="bg-gray-200 text-gray-700 text-left text-sm">
+                  <tr className="bg-teal-600 text-white text-left text-sm">
                     <th className="px-4 py-2">Emp ID</th>
                     <th className="px-4 py-2">Name</th>
                     <th className="px-4 py-2">Leave Type</th>
                     <th className="px-4 py-2">From</th>
                     <th className="px-4 py-2">To</th>
+                    <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Status</th>
                     {viewType === "pending" && (
                       <th className="px-4 py-2">Action</th>
@@ -180,18 +304,28 @@ const LeaveView = () => {
                 </thead>
                 <tbody className="text-sm">
                   {getDataToShow().map((data, i) => (
-                    <tr className="border-t" key={i}>
-                      <td className="px-4 py-2">{data.empId}</td>
-                      <td className="px-4 py-2">{data.emp_name}</td>
-                      <td className="px-4 py-2">{data.leavetype}</td>
-                      <td className="px-4 py-2">
+                    <tr
+                      key={i}
+                      className="border-t hover:bg-teal-50 transition"
+                    >
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        {data.empId}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        {data.emp_name}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        {data.leavetype}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap">
                         {new Date(data.fromDate).toISOString().split("T")[0]}
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 whitespace-nowrap">
                         {new Date(data.toDate).toISOString().split("T")[0]}
                       </td>
+                      <td className="px-4 py-2 ">{data.desc}</td>
                       <td
-                        className={`px-4 py-2 ${
+                        className={`px-4 py-2 whitespace-nowrap ${
                           data.status === "Approved"
                             ? "text-green-600"
                             : data.status === "Rejected"
@@ -202,16 +336,16 @@ const LeaveView = () => {
                         {data.status}
                       </td>
                       {viewType === "pending" && (
-                        <td className="px-4 py-2">
+                        <td className="px-4 py-2 whitespace-nowrap">
                           <button
-                            onClick={() => handleApprove(data._id)}
-                            className="bg-green-500 text-white px-2 py-1 rounded mr-2 text-xs"
+                            onClick={() => confirmDelete(data._id, "approve")}
+                            className="bg-green-500 text-white px-2 py-1 rounded-full mr-2 text-xs hover:bg-green-600 transition"
                           >
                             Approve
                           </button>
                           <button
-                            onClick={() => handleReject(data._id)}
-                            className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+                            onClick={() => confirmDelete(data._id, "reject")}
+                            className="bg-red-500 text-white px-2 py-1 rounded-full text-xs hover:bg-red-600 transition"
                           >
                             Reject
                           </button>

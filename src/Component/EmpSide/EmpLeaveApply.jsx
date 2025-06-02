@@ -13,6 +13,7 @@ const LeaveAdd = () => {
     emp_id: user?.emp_id || "",
     emp_name: user?.emp_name || "",
     leavetype: "",
+    desc: "",
     fromDate: "",
     toDate: "",
   });
@@ -25,7 +26,7 @@ const LeaveAdd = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`,
+          `http://localhost:4000/api/employee/${user?._id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +70,7 @@ const LeaveAdd = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://employee-backend-q7hn.onrender.com/api/leave/add",
+        "http://localhost:4000/api/leave/add",
         leave,
         {
           headers: {
@@ -154,6 +155,14 @@ const LeaveAdd = () => {
               </select>
             </div>
 
+            <textarea
+              value={leave.desc}
+              name="desc"
+              rows={3}
+              onChange={handleChange}
+              required
+              className="w-full border focus:outline-none focus:border-green-500 rounded-lg p-2"
+            />
             {redAlert && (
               <div className="text-red-500 text-sm mb-4">
                 Please check the From Date and To Date.
