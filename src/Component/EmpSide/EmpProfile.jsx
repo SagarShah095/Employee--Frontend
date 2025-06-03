@@ -36,6 +36,8 @@ const EmpProfile = () => {
     fetchData();
   }, [user]);
 
+  console.log(selectedEmp, "selectedI")
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
       <Navbar />
@@ -54,9 +56,9 @@ const EmpProfile = () => {
                 alt="profile"
                 className="w-28 h-28 object-cover rounded-full"
               />
-              <div>
+              <div className="flex flex-col gap-1">
                 <h1 className="text-3xl font-bold text-gray-800">
-                  {selectedEmp?.name}
+                  {selectedEmp?.emp_name}
                 </h1>
                 <p className="text-gray-600 text-sm">{selectedEmp?.email}</p>
               </div>

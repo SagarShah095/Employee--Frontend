@@ -68,7 +68,7 @@ const Project = () => {
             isOpen={showModal}
             onClose={() => setShowModal(false)}
             onConfirm={handleConfirmDelete}
-            title="Are you sure Want to delete this ?"
+            message="Are you sure Want to delete this ?"
           />
 
           <div className="flex justify-between items-center mb-6">

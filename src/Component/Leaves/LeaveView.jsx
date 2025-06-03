@@ -309,7 +309,7 @@ const LeaveView = () => {
                       className="border-t hover:bg-teal-50 transition"
                     >
                       <td className="px-4 py-2 whitespace-nowrap">
-                        {data.empId}
+                        {data.emp_id}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">
                         {data.emp_name}
