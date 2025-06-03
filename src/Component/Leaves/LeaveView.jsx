@@ -22,7 +22,7 @@ const LeaveView = () => {
     const fetchLeaveData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:4000/api/leave/", {
+        const response = await axios.get("http://https://employee-backend-q7hn.onrender.com/api/leave/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -60,7 +60,7 @@ const LeaveView = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/leave/${id}`,
+        `http://https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
         { status: "Approved" },
         {
           headers: {
@@ -90,7 +90,7 @@ const LeaveView = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/leave/${id}`,
+        `http://https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
         { status: "Rejected" },
         {
           headers: {

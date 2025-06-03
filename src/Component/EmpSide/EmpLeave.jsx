@@ -5,7 +5,6 @@ import Navbar from "../Dashboard/Navbar";
 import { useAuth } from "../../Context/authContext";
 import { Loader } from "lucide-react";
 
-// Reusable summary card
 const SummaryCard = ({ count, label, bgColor, textColor }) => (
   <div className={`${bgColor} p-6 rounded-xl shadow-md text-center`}>
     <h2 className={`text-2xl font-bold ${textColor}`}>{count}</h2>
@@ -17,7 +16,7 @@ const EmpLeave = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const URL = "http://localhost:4000";
+  const URL = "http://https://employee-backend-q7hn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,29 +62,30 @@ const EmpLeave = () => {
         <EmployeeSidebar />
 
         <main className="flex-1 p-10 bg-gradient-to-br from-white via-blue-50 to-blue-100">
-      {loading && <Loader />}
+          {loading && <Loader />}
           <div className="backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl p-10 border border-gray-200">
-            <h1 className="text-4xl font-extrabold text-blue-700 mb-6">
+            <h1 className="text-4xl font-extrabold text-black mb-6">
               Employee Leave Portal
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-              Manage your leave applications, check balance, and view leave history.
+              Manage your leave applications, check balance, and view leave
+              history.
             </p>
 
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
-        <tr key={i} className="border-b animate-pulse">
-          <td className="py-3 px-4">
-            <div className="h-4 bg-gray-300 rounded w-24"></div>
-          </td>
-          <td className="py-3 px-4">
-            <div className="h-4 bg-gray-300 rounded w-28"></div>
-          </td>
-          <td className="py-3 px-4">
-            <div className="h-4 bg-gray-300 rounded w-20"></div>
-          </td>
-        </tr>
-      ))
+                <tr key={i} className="border-b animate-pulse">
+                  <td className="py-3 px-4">
+                    <div className="h-4 bg-gray-300 rounded w-24"></div>
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="h-4 bg-gray-300 rounded w-28"></div>
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="h-4 bg-gray-300 rounded w-20"></div>
+                  </td>
+                </tr>
+              ))
             ) : userData && userData.length > 0 ? (
               <>
                 {/* Summary cards */}
@@ -97,13 +97,19 @@ const EmpLeave = () => {
                     textColor="text-blue-700"
                   />
                   <SummaryCard
-                    count={userData.filter((item) => item.status === "Approved").length}
+                    count={
+                      userData.filter((item) => item.status === "Approved")
+                        .length
+                    }
                     label="Approved Leaves"
                     bgColor="bg-green-100"
                     textColor="text-green-700"
                   />
                   <SummaryCard
-                    count={userData.filter((item) => item.status === "Pending").length}
+                    count={
+                      userData.filter((item) => item.status === "Pending")
+                        .length
+                    }
                     label="Pending Leaves"
                     bgColor="bg-yellow-100"
                     textColor="text-yellow-700"
@@ -128,7 +134,11 @@ const EmpLeave = () => {
                         <tr key={i} className="border-b hover:bg-blue-50">
                           <td className="py-3 px-4">{item.fromDate}</td>
                           <td className="py-3 px-4">{item.leavetype} Leave</td>
-                          <td className={`py-3 px-4 font-semibold ${getStatusColor(item.status)}`}>
+                          <td
+                            className={`py-3 px-4 font-semibold ${getStatusColor(
+                              item.status
+                            )}`}
+                          >
                             {item.status}
                           </td>
                         </tr>
@@ -139,8 +149,12 @@ const EmpLeave = () => {
               </>
             ) : (
               <div className="bg-white rounded-xl shadow-sm p-6 text-center mt-10">
-                <h2 className="text-xl font-bold mb-2">No Leave Data Available</h2>
-                <p className="text-gray-400">You have not applied for any leaves yet.</p>
+                <h2 className="text-xl font-bold mb-2">
+                  No Leave Data Available
+                </h2>
+                <p className="text-gray-400">
+                  You have not applied for any leaves yet.
+                </p>
               </div>
             )}
           </div>

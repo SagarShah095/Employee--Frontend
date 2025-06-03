@@ -13,7 +13,7 @@ const EmployeeProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/projects`, {
+      .get(`http://https://employee-backend-q7hn.onrender.com/api/projects`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => {
@@ -48,8 +48,8 @@ const EmployeeProjectDetail = () => {
               <FaArrowLeft /> Back to Dashboard
             </button> */}
 
-            <h2 className="text-4xl font-bold text-center text-blue-600 mb-8">
-              🚀 My Projects
+            <h2 className="text-4xl font-bold text-center text-teal-600 mb-8">
+              My Projects
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -70,7 +70,7 @@ const EmployeeProjectDetail = () => {
                     className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-300 ease-in-out"
                   >
                     <h3
-                      className="text-2xl font-bold text-blue-500 cursor-pointer hover:underline mb-2"
+                      className="text-2xl font-bold text-black cursor-pointer hover:underline mb-2"
                       onClick={() =>
                         navigate(`/employee/my-project/${project._id}`)
                       }

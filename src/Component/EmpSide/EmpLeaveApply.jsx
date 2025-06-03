@@ -8,7 +8,7 @@ import { Loader } from "lucide-react";
 const LeaveAdd = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [empData, setEmpData] = useState(null); // ✅ Actual fetched employee data
+  const [empData, setEmpData] = useState(null); 
   const [leave, setLeave] = useState({
     emp_id: user?.emp_id || "",
     emp_name: user?.emp_name || "",
@@ -26,7 +26,7 @@ const LeaveAdd = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/employee/${user?._id}`,
+          `http://https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +70,7 @@ const LeaveAdd = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/leave/add",
+        "http://https://employee-backend-q7hn.onrender.com/api/leave/add",
         leave,
         {
           headers: {
@@ -104,7 +104,7 @@ const LeaveAdd = () => {
         <EmployeeSidebar />
         <div className="w-full bg-gray-100 min-h-screen p-8">
           {loading && <Loader />}
-          <h1 className="text-xl font-semibold text-center mb-6">
+          <h1 className="text-3xl font-semibold text-center mb-6">
             Apply Leaves
           </h1>
           <form

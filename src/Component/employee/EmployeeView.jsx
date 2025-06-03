@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import * as XLSX from "xlsx";
 const EmployeeView = () => {
-  const url = "http://localhost:4000";
+  const url = "http://https://employee-backend-q7hn.onrender.com";
 
   const [selectedemp, setSelectedEmp] = useState({});
   const { id } = useParams();

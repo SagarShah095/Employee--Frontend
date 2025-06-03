@@ -4,10 +4,9 @@ import axios from "axios";
 import Navbar from "../Component/Dashboard/Navbar";
 import AdminSidebar from "../Component/Dashboard/AdminSidebar";
 import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 const AddProject = () => {
-  const url = "http://localhost:4000/api/projects";
+  const url = "http://https://employee-backend-q7hn.onrender.com/api/projects";
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -25,7 +24,7 @@ const AddProject = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/employee", {
+      .get("http://https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -34,11 +33,6 @@ const AddProject = () => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleEmployeesChange = (e) => {
-    const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
-    setForm({ ...form, assignedEmployees: selected });
   };
 
   const handleSubmit = async (e) => {

@@ -33,6 +33,8 @@ import EditProject from "./Pages/EditProject";
 import EmployeeProjectDetail from "./Pages/EmpProjectDetail";
 import EmployeeSingleProjectDetail from "./Pages/EmployeeSingleProjectDetail";
 import EmpNotifications from "./Pages/EmpNotification";
+import ForgotPassword from "./Pages/ForgetPassword";
+import ResetPassword from "./Pages/ResetPass";
 
 function App() {
   const [department, setDepartment] = useState([]);
@@ -56,6 +58,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forget-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route
           path="/admin-dashboard"
           element={

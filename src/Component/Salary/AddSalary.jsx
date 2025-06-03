@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddSalary = () => {
-  const url = "http://localhost:4000";
+  const url = "http://https://employee-backend-q7hn.onrender.com";
 
   const { id } = useParams();
   const navigate = useNavigate();

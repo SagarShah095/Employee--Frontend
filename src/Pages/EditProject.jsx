@@ -3,11 +3,13 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminSidebar from "../Component/Dashboard/AdminSidebar";
 import Navbar from "../Component/Dashboard/Navbar";
+import Select from "react-select";
 
 const EditProject = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
+  const token = localStorage.getItem("token");
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -17,7 +19,7 @@ const EditProject = () => {
     technologies: [],
     assignedEmployees: [],
   });
-  const url = "http://localhost:4000/api/projects";
+  const url = "http://https://employee-backend-q7hn.onrender.com/api/projects";
 
   useEffect(() => {
     axios
@@ -62,6 +64,19 @@ const EditProject = () => {
       });
   };
 
+  const [employees, setEmployees] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://https://employee-backend-q7hn.onrender.com/api/employee", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setEmployees(res.data?.Emp))
+      .catch(console.error);
+  }, [token]);
+  const employeeOptions = employees.map((emp) => ({
+    value: emp._id,
+    label: emp.emp_name,
+  }));
   if (!project) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -81,7 +96,7 @@ const EditProject = () => {
         <div className="flex justify-center p-8">
           <div className="w-full max-w-2xl bg-white rounded-lg shadow-md  p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">
-              Create New Project
+               Edit Project
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -157,7 +172,7 @@ const EditProject = () => {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block font-semibold">
                   Assigned Employees (IDs, comma separated)
                 </label>
@@ -168,7 +183,24 @@ const EditProject = () => {
                   onChange={handleChange}
                   className="w-full border px-3 py-2 rounded"
                 />
-              </div>
+              </div> */}
+              <Select
+                name="assignedEmployees"
+                closeMenuOnSelect={false}
+                options={employeeOptions}
+                value={employeeOptions.filter((option) =>
+                  form.assignedEmployees.includes(option.value)
+                )}
+                onChange={(selectedOptions) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    assignedEmployees: selectedOptions.map(
+                      (option) => option.value
+                    ),
+                  }))
+                }
+                isMulti
+              />
 
               <button
                 type="submit"

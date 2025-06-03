@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 
 const EmpChangePass = () => {
   const { user } = useAuth();
-  const url = "http://localhost:4000";
+  const url = "http://https://employee-backend-q7hn.onrender.com";
 
   const [selectedEmp, setSelectedEmp] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -183,7 +183,7 @@ const EmpChangePass = () => {
                     placeholder="Confirm new password"
                   />
                 </div>
-
+              
                 <button
                   type="submit"
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
