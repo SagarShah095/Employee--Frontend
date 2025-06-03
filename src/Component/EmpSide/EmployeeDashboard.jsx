@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
-  const url = "http://https://employee-backend-q7hn.onrender.com";
+  const url = "https://employee-backend-q7hn.onrender.com";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(false);

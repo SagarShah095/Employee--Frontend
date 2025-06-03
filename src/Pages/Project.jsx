@@ -15,7 +15,7 @@ const Project = () => {
   const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
 
-  const url = "http://https://employee-backend-q7hn.onrender.com";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   // Fetch Projects
   const fetchProjects = async () => {

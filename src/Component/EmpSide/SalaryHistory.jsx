@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/authContext";
 import { Loader } from "lucide-react";
 
 const SalaryHistory = () => {
-  const URL = "http://https://employee-backend-q7hn.onrender.com";
+  const URL = "https://employee-backend-q7hn.onrender.com";
   const { user } = useAuth();
   const [salaryHistory, setSalaryHistory] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -26,7 +26,7 @@ const LeaveAdd = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`,
+          `https://employee-backend-q7hn.onrender.com/api/employee/${user?._id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +70,7 @@ const LeaveAdd = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://https://employee-backend-q7hn.onrender.com/api/leave/add",
+        "https://employee-backend-q7hn.onrender.com/api/leave/add",
         leave,
         {
           headers: {

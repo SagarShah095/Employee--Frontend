@@ -13,7 +13,7 @@ const EmployeeProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://https://employee-backend-q7hn.onrender.com/api/projects`, {
+      .get(`https://employee-backend-q7hn.onrender.com/api/projects`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => {

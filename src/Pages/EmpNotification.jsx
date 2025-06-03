@@ -6,7 +6,7 @@ import EmployeeSidebar from "../Component/EmpSide/EmployeeSidebar";
 import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://https://employee-backend-q7hn.onrender.com");
+const socket = io("https://employee-backend-q7hn.onrender.com");
 
 function EmpNotifications() {
   const { user } = useAuth();
@@ -20,7 +20,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.get(
-        `http://https://employee-backend-q7hn.onrender.com/api/notifications/${userId}`
+        `https://employee-backend-q7hn.onrender.com/api/notifications/${userId}`
       );
       setNotifications(res.data);
     } catch (err) {
@@ -34,7 +34,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.get(
-        `http://https://employee-backend-q7hn.onrender.com/api/notifications/unread-count/${userId}`
+        `https://employee-backend-q7hn.onrender.com/api/notifications/unread-count/${userId}`
       );
       setUnreadCount(res.data.count);
     } catch (err) {
@@ -46,7 +46,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.put(
-        `http://https://employee-backend-q7hn.onrender.com/api/notifications/mark-all-read/${userId}`
+        `https://employee-backend-q7hn.onrender.com/api/notifications/mark-all-read/${userId}`
       );
       console.log(res.data);
       await fetchNotifications();
@@ -113,7 +113,7 @@ function EmpNotifications() {
                     onClick={async () => {
                       try {
                         await axios.put(
-                          `http://https://employee-backend-q7hn.onrender.com/api/notifications/mark-read/${n._id}`
+                          `https://employee-backend-q7hn.onrender.com/api/notifications/mark-read/${n._id}`
                         );
                         setNotifications((prev) =>
                           prev.map((item) =>

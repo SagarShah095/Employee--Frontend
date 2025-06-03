@@ -19,7 +19,7 @@ const EditProject = () => {
     technologies: [],
     assignedEmployees: [],
   });
-  const url = "http://https://employee-backend-q7hn.onrender.com/api/projects";
+  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
 
   useEffect(() => {
     axios
@@ -67,7 +67,7 @@ const EditProject = () => {
   const [employees, setEmployees] = useState([]);
   useEffect(() => {
     axios
-      .get("http://https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))

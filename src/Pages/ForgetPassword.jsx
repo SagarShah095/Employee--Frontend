@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://https://employee-backend-q7hn.onrender.com/api/auth/forgot-password",
+        "https://employee-backend-q7hn.onrender.com/api/auth/forgot-password",
         { email }
       );
       setMessage(res.data.message);

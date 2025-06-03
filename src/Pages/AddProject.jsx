@@ -6,7 +6,7 @@ import AdminSidebar from "../Component/Dashboard/AdminSidebar";
 import Select from "react-select";
 
 const AddProject = () => {
-  const url = "http://https://employee-backend-q7hn.onrender.com/api/projects";
+  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const AddProject = () => {
 
   useEffect(() => {
     axios
-      .get("http://https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))

@@ -14,7 +14,7 @@ const EmployeeSingleProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://https://employee-backend-q7hn.onrender.com/api/projects/${id}`, {
+      .get(`https://employee-backend-q7hn.onrender.com/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => setProject(data))
@@ -23,7 +23,7 @@ const EmployeeSingleProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get("http://https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -144,7 +144,7 @@ const EmployeeSingleProjectDetail = () => {
                         className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg shadow hover:shadow-md transition"
                       >
                         <img
-                          src={`http://https://employee-backend-q7hn.onrender.com/${emp.Img}`}
+                          src={`https://employee-backend-q7hn.onrender.com/${emp.Img}`}
                           alt={emp.emp_name}
                           className="w-12 h-12 rounded-full object-cover border"
                         />

@@ -16,7 +16,7 @@ const LeaveDetails = () => {
     setLoading(true)
     try {
       const response = await axios.get(
-        `http://https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

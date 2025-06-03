@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const EditDepartment = () => {
 
-  const url = "http://https://employee-backend-q7hn.onrender.com";
+  const url = "https://employee-backend-q7hn.onrender.com";
 
   const [loading, setLoading] = useState(false);
 
