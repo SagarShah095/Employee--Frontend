@@ -3,7 +3,9 @@ import Navbar from "../Dashboard/Navbar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import { useAuth } from "../../Context/authContext";
 import axios from "axios";
-import { Loader } from "lucide-react";
+
+import TourManager from "../../shared/TourManager";
+import Loader from "../Loader";
 
 const EmpChangePass = () => {
   const { user } = useAuth();
@@ -105,8 +107,18 @@ const EmpChangePass = () => {
     setLoading(false);
   };
 
+  const steps = [
+    {
+      id: "page5-step",
+      text: "This is Change Password Page, here you can Change your Password. Click next tos go to Leave History Page",
+      attachTo: { element: ".page5-next-btn", on: "bottom" },
+      nextRoute: "/employee/leave-history",
+    },
+  ];
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
+      {loading && <Loader/>}
+      <TourManager steps={steps} pageKey="page5" />
       <Navbar />
       <div className="flex">
         <EmployeeSidebar />
@@ -116,11 +128,7 @@ const EmpChangePass = () => {
               Change Password
             </h2>
 
-            {loading && (
-              <div className="flex justify-center mb-4">
-                <Loader className="animate-spin" />
-              </div>
-            )}
+         
 
             {message && (
               <div
@@ -183,7 +191,7 @@ const EmpChangePass = () => {
                     placeholder="Confirm new password"
                   />
                 </div>
-              
+
                 <button
                   type="submit"
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"

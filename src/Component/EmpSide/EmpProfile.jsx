@@ -3,7 +3,9 @@ import Navbar from "../Dashboard/Navbar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import { useAuth } from "../../Context/authContext";
 import axios from "axios";
-import { Loader } from "lucide-react";
+
+import TourManager from "../../shared/TourManager";
+import Loader from "../Loader";
 
 const EmpProfile = () => {
   const { user } = useAuth();
@@ -36,17 +38,25 @@ const EmpProfile = () => {
     fetchData();
   }, [user]);
 
-  console.log(selectedEmp, "selectedI")
+  const steps = [
+    {
+      id: "page2-step",
+      text: "This is Profile Page , here you can check your all data. Click next to go to Attendance",
+      attachTo: { element: ".page2-next-btn", on: "bottom" },
+      nextRoute: "/employee/punch",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
+      <TourManager steps={steps} pageKey="page2" />
       <Navbar />
       <div className="flex">
         <EmployeeSidebar />
-        <div className="flex-1 p-6">
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8">
+        <div className="flex-1 p-6 ">
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-8 ">
             {loading && <Loader />}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 ">
               <img
                 src={
                   selectedEmp?.Img
@@ -64,7 +74,7 @@ const EmpProfile = () => {
               </div>
             </div>
 
-            <div className="mt-8 space-y-4 text-gray-700 text-base">
+            <div className="mt-8 space-y-4 text-gray-700 text-base page2-next-btn">
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 <div>
                   <span className="font-semibold text-gray-900">

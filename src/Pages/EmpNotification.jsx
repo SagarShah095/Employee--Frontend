@@ -5,6 +5,8 @@ import Navbar from "../Component/Dashboard/Navbar";
 import EmployeeSidebar from "../Component/EmpSide/EmployeeSidebar";
 import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
+import TourManager from "../shared/TourManager";
+import Loader from "../Component/Loader";
 
 const socket = io("https://employee-backend-q7hn.onrender.com");
 
@@ -73,12 +75,44 @@ function EmpNotifications() {
     };
   }, [userId]);
 
+  const steps = [
+    {
+      id: "page9-step",
+      text: "🎉 This is the Notification page, here is you can check your all notificaton. You’ve completed the onboarding!",
+      attachTo: { element: ".page9-end-btn", on: "top" },
+      nextRoute: "/employee-dashboard",
+      buttons: [
+        {
+          text: "End",
+          action: () => {
+            localStorage.setItem("tour_page9_done", "true");
+            window.__tour__?.complete();
+          },
+        },
+      ],
+    },
+  ];
+
+  const resetTour = () => {
+    for (let i = 1; i <= 9; i++) {
+      localStorage.removeItem(`tour_page${i}_done`);
+    }
+    navigate("/employee-dashboard");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+      <TourManager steps={steps} pageKey="page9" />
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
         <div className="flex-1 p-8 overflow-y-auto">
+          <button
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+            onClick={resetTour}
+          >
+            🔁 Reset Tour
+          </button>
           <div className="flex justify-between items-center gap-10">
             <h2 className="text-2xl font-bold mb-4">🔔 Notifications</h2>
 
@@ -98,7 +132,7 @@ function EmpNotifications() {
           </div>
 
           {loading ? (
-            <p>Loading notifications...</p>
+   <Loader/>
           ) : notifications.length === 0 ? (
             <p className="text-gray-500 italic">No notifications available.</p>
           ) : (

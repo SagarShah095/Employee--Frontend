@@ -3,7 +3,9 @@ import EmployeeSidebar from "./EmployeeSidebar";
 import Navbar from "../Dashboard/Navbar";
 import axios from "axios";
 import { useAuth } from "../../Context/authContext";
-import { Loader } from "lucide-react";
+
+import TourManager from "../../shared/TourManager";
+import Loader from "../Loader";
 
 const SalaryHistory = () => {
   const URL = "https://employee-backend-q7hn.onrender.com";
@@ -35,21 +37,28 @@ const SalaryHistory = () => {
     fetchSalaryHistory();
   }, [user]);
 
-
-  // ✅ Correct Filter only user's department and emp_name match
   const filteredData = salaryHistory.filter(
     (data) => data.mainEmpId === user?.emp_id
   );
 
+  const steps = [
+    {
+      id: "page4-step",
+      text: "This is Salary Page Page, here you can Check your salary details. Click next to go to Notification",
+      attachTo: { element: ".page4-next-btn", on: "bottom" },
+      nextRoute: "/employee/notification",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+      <TourManager steps={steps} pageKey="page8" />
+      {loading && <Loader />}
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
 
         <div className="flex-1 p-8 overflow-y-auto">
-      {loading && <Loader />}
           <h1 className="text-2xl font-semibold text-gray-700 mb-6">
             Salary History
           </h1>

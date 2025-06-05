@@ -4,6 +4,7 @@ import EmployeeSidebar from "./EmployeeSidebar";
 import axios from "axios";
 import { useAuth } from "../../Context/authContext";
 import Loader from "../Loader";
+import TourManager from "../../shared/TourManager";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
@@ -99,12 +100,10 @@ const EmployeeDashboard = () => {
     const inDate = new Date(inTime);
     const outDate = new Date(outTime);
 
-    // Handle cross-midnight scenarios (optional)
     if (outDate < inDate) return "--";
 
     let totalDiff = outDate - inDate;
 
-    // Subtract lunch time if both start and end exist and are valid
     if (lunchStart && lunchEnd) {
       const lunchStartDate = new Date(lunchStart);
       const lunchEndDate = new Date(lunchEnd);
@@ -118,21 +117,29 @@ const EmployeeDashboard = () => {
       }
     }
 
-    // Convert milliseconds to hours and minutes
     const hrs = Math.floor(totalDiff / 3600000);
-    const mins = Math.round((totalDiff % 3600000) / 60000); // Round to nearest minute
+    const mins = Math.round((totalDiff % 3600000) / 60000);
 
     return `${hrs}h ${mins}m`;
   };
 
+  const steps = [
+    {
+      id: "page1-step",
+      text: "Welcome to Dashboard, here you can check your data and attendace . Click next to go to profile page.",
+      attachTo: { element: ".page1-next-btn", on: "bottom" },
+      nextRoute: "/employee/profile",
+    },
+  ];
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 ">
+      <TourManager steps={steps} pageKey="page1" />
       <Navbar />
-      <div className="flex">
+      <div className="flex ">
         <EmployeeSidebar />
-        <div className="w-full p-6">
+        <div className="w-full p-6 ">
           {loading && <Loader />}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className=" bg-white rounded-lg shadow-md p-6 mb-6 page1-next-btn">
             <h2 className="text-2xl font-bold mb-4">
               Welcome, {employeeData?.emp_name || "Employee"}
             </h2>
@@ -167,7 +174,6 @@ const EmployeeDashboard = () => {
             </div>
           </div>
 
-          {/* Attendance Records */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Latest Attendance</h3>
             {attendanceData.length > 0 ? (

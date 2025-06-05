@@ -3,7 +3,9 @@ import axios from "axios";
 import EmployeeSidebar from "./EmployeeSidebar";
 import Navbar from "../Dashboard/Navbar";
 import { useAuth } from "../../Context/authContext";
-import { Loader } from "lucide-react";
+
+import TourManager from "../../shared/TourManager";
+import Loader from "../Loader";
 
 const SummaryCard = ({ count, label, bgColor, textColor }) => (
   <div className={`${bgColor} p-6 rounded-xl shadow-md text-center`}>
@@ -54,15 +56,25 @@ const EmpLeave = () => {
     }
   };
 
+  const steps = [
+    {
+      id: "page4-step",
+      text: "This is  Leave History Page, here you can check your Leave History. Click next to go to Apply Leave Page",
+      attachTo: { element: ".page4-next-btn", on: "bottom" },
+      nextRoute: "/employee/apply-leave",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+      <TourManager steps={steps} pageKey="page6" />
+      {loading && <Loader />}
       <Navbar />
 
       <div className="flex flex-1 overflow-hidden">
         <EmployeeSidebar />
 
         <main className="flex-1 p-10 bg-gradient-to-br from-white via-blue-50 to-blue-100">
-          {loading && <Loader />}
           <div className="backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl p-10 border border-gray-200">
             <h1 className="text-4xl font-extrabold text-black mb-6">
               Employee Leave Portal

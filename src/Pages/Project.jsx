@@ -15,8 +15,6 @@ const Project = () => {
   const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
 
-  const url = "https://employee-backend-q7hn.onrender.com";
-
   // Fetch Projects
   const fetchProjects = async () => {
     try {
@@ -54,13 +52,12 @@ const Project = () => {
     }
   };
 
-  if (loading) return <Loader />;
-
   return (
     <div className="flex">
       <ToastContainer position="top-right" autoClose={2500} />
       <AdminSidebar />
       <div className="flex-1 bg-gray-100 min-h-screen">
+        {loading && <Loader />}
         <Navbar />
 
         <div className="p-8">

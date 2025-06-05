@@ -201,7 +201,7 @@ const LeaveView = () => {
             </h1>
           </div>
 
-          {loading && <Loader />}
+          {/* {loading && <Loader />} */}
           <ConfirmationModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -303,67 +303,79 @@ const LeaveView = () => {
                   </tr>
                 </thead>
                 <tbody className="text-sm">
-                  {getDataToShow().map((data, i) => (
-                    <tr
-                      key={i}
-                      className="border-t hover:bg-teal-50 transition"
-                    >
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {data.emp_id}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {data.emp_name}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {data.leavetype}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {new Date(data.fromDate).toISOString().split("T")[0]}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {new Date(data.toDate).toISOString().split("T")[0]}
-                      </td>
-                      <td className="px-4 py-2 ">{data.desc}</td>
-                      <td
-                        className={`px-4 py-2 whitespace-nowrap ${
-                          data.status === "Approved"
-                            ? "text-green-600"
-                            : data.status === "Rejected"
-                            ? "text-red-500"
-                            : "text-yellow-600"
-                        }`}
-                      >
-                        {data.status}
-                      </td>
-                      {viewType === "pending" && (
-                        <td className="px-4 py-2 whitespace-nowrap">
-                          <button
-                            onClick={() => confirmDelete(data._id, "approve")}
-                            className="bg-green-500 text-white px-2 py-1 rounded-full mr-2 text-xs hover:bg-green-600 transition"
-                          >
-                            Approve
-                          </button>
-                          <button
-                            onClick={() => confirmDelete(data._id, "reject")}
-                            className="bg-red-500 text-white px-2 py-1 rounded-full text-xs hover:bg-red-600 transition"
-                          >
-                            Reject
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                  {getDataToShow().length === 0 && (
-                    <tr>
-                      <td
-                        colSpan="7"
-                        className="text-center text-gray-500 py-4"
-                      >
-                        No leave records found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
+  {loading
+    ? Array.from({ length: 5 }).map((_, i) => (
+        <tr key={i} className="border-t animate-pulse">
+          {[60, 80, 80, 90, 90, 140, 70].map((w, index) => (
+            <td key={index} className="px-4 py-3">
+              <div className={`h-4 bg-gray-300 rounded w-[${w}px]`}></div>
+            </td>
+          ))}
+          {viewType === "pending" && (
+            <td className="px-4 py-3 flex gap-2">
+              <div className="h-6 w-14 bg-gray-300 rounded-full"></div>
+              <div className="h-6 w-14 bg-gray-300 rounded-full"></div>
+            </td>
+          )}
+        </tr>
+      ))
+    : getDataToShow().length > 0
+    ? getDataToShow().map((data, i) => (
+        <tr
+          key={i}
+          className="border-t hover:bg-teal-50 transition duration-200"
+        >
+          <td className="px-4 py-2 whitespace-nowrap">{data.emp_id}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{data.emp_name}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{data.leavetype}</td>
+          <td className="px-4 py-2 whitespace-nowrap">
+            {new Date(data.fromDate).toISOString().split("T")[0]}
+          </td>
+          <td className="px-4 py-2 whitespace-nowrap">
+            {new Date(data.toDate).toISOString().split("T")[0]}
+          </td>
+          <td className="px-4 py-2">{data.desc}</td>
+          <td
+            className={`px-4 py-2 whitespace-nowrap ${
+              data.status === "Approved"
+                ? "text-green-600"
+                : data.status === "Rejected"
+                ? "text-red-500"
+                : "text-yellow-600"
+            }`}
+          >
+            {data.status}
+          </td>
+          {viewType === "pending" && (
+            <td className="px-4 py-2 whitespace-nowrap">
+              <button
+                onClick={() => confirmDelete(data._id, "approve")}
+                className="bg-green-500 text-white px-2 py-1 rounded-full mr-2 text-xs hover:bg-green-600 transition"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => confirmDelete(data._id, "reject")}
+                className="bg-red-500 text-white px-2 py-1 rounded-full text-xs hover:bg-red-600 transition"
+              >
+                Reject
+              </button>
+            </td>
+          )}
+        </tr>
+      ))
+    : (
+        <tr>
+          <td
+            colSpan={viewType === "pending" ? 8 : 7}
+            className="text-center text-gray-500 py-4"
+          >
+            No leave records found.
+          </td>
+        </tr>
+      )}
+</tbody>
+
               </table>
             </div>
           </div>

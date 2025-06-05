@@ -4,14 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
 import EmployeeSidebar from "../Component/EmpSide/EmployeeSidebar";
 import Navbar from "../Component/Dashboard/Navbar";
+import TourManager from "../shared/TourManager";
+import Loader from "../Component/Loader";
 
 const EmployeeProjectDetail = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`https://employee-backend-q7hn.onrender.com/api/projects`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -21,25 +25,30 @@ const EmployeeProjectDetail = () => {
           p.assignedEmployees.includes(user?._id)
         );
         setProjects(myProjects);
+        setLoading(false);
       })
       .catch(console.error);
+    setLoading(false);
   }, [token, user]);
 
-  if (!projects || projects.length === 0) {
-    return (
-      <p className="text-center mt-10 text-lg font-semibold text-gray-500">
-        No projects assigned to you.
-      </p>
-    );
-  }
+  const steps = [
+    {
+      id: "page4-step",
+      text: "This is My Project Page, here you can check your assigetd Projects. Click next to go to Change Password page",
+      attachTo: { element: ".page4-next-btn", on: "bottom" },
+      nextRoute: "/employee/change-password",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+      <TourManager steps={steps} pageKey="page4" />
+      {loading && <Loader />}
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
 
-        <div className="flex-1 p-8 overflow-y-auto">
+        <div className="flex-1 p-8 overflow-y-auto ">
           <div className="max-w-6xl mx-auto mt-10 p-4 sm:p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg">
             {/* <button
               onClick={() => navigate("/employee-dashboard")}
@@ -53,7 +62,7 @@ const EmployeeProjectDetail = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {projects.map((project) => {
+              {projects?.map((project) => {
                 const start = new Date(project.startDate);
                 const end = new Date(project.endDate);
                 const today = new Date();

@@ -6,7 +6,6 @@ import axios from "axios";
 import Loader from "../Loader";
 
 const List = () => {
-
   const { id } = useParams();
 
   const url = "https://employee-backend-q7hn.onrender.com";
@@ -41,14 +40,16 @@ const List = () => {
     fetchData();
   }, []);
 
-
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${url}/api/employee/${selectedEmpId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `${url}/api/employee/${selectedEmpId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.data.success) {
         setToast("Employee deleted successfully.");
@@ -67,11 +68,9 @@ const List = () => {
     }
   };
 
-
-
-
   return (
     <div className="relative">
+            {/* {loading && <Loader />} */}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100">
@@ -79,7 +78,6 @@ const List = () => {
             <Navbar />
           </div>
           <div className="p-5">
-      {loading && <Loader />}
             <div className="text-center">
               <h3 className="text-2xl font-bold">Manage Employee</h3>
             </div>
@@ -99,112 +97,94 @@ const List = () => {
           </div>
           <div className="p-5">
             <div className="relative overflow-x-auto rounded-lg">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                <thead className="text-xs text-black border shadow-sm uppercase bg-white">
-                  <tr>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      S No
-                    </th>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      Image
-                    </th>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      Name
-                    </th>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      Dob
-                    </th>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      Department
-                    </th>
-                    <th scope="col" className="px-6 text-lg py-3">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="">
-                  {loading ?  Array.from({ length: 6 }).map((_, index) => (
-                        <tr key={index} className="border-t">
-                          {[24, 16, 16, 20].map((width, colIndex) => (
-                            <td key={colIndex} className="py-4 px-4">
-                              <div
-                                className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
-                              ></div>
-                            </td>
-                          ))}
-                        </tr>
-                      )): 
-                  empData?.map((emp, i) => (
-                    <tr
-                      key={i}
-                      className="bg-white border-b  text-black border-gray-200 hover:bg-gray-50 "
-                    >
-                      <th
-                        scope="row"
-                        className="px-6 text-base py-4 font-medium text-black whitespace-nowrap "
-                      >
-                        {i + 1}
-                      </th>
-                      <td className="px-6 text-base py-4">
-                        <img
-                          src={`${url}/${emp.Img}`}
-                          alt={emp.emp_name}
-                          className="w-12 h-12 rounded-full"
-                        />
-                      </td>
-                      <td className="px-6 text-base py-4">{emp.emp_name}</td>
-                      <td className="px-6 text-base py-4">
-                        {emp.dob
-                          ? new Date(emp.dob).toLocaleDateString("en-GB")
-                          : ""}{" "}
-                      </td>
-                      <td className="px-6 text-base py-4">{emp.Dept}</td>
-                      <td className="flex items-center gap-2 px-2 py-4">
-                        <div
-                          to="/admin-dashboard/employee/view"
-                          className="font-medium bg-blue-500 px-3 py-2 text-white rounded-lg hover:underline"
-                          onClick={() =>
-                            navigate(`/admin-dashboard/employee/${emp._id}`)
-                          }
-                        >
-                          View
-                        </div>
-                        <NavLink
-                          href="#"
-                          className="font-medium text-white px-3 py-2 rounded-lg bg-teal-500 hover:underline mr-3"
-                          to={`/admin-dashboard/employee/edit/${emp._id}`}
-                        >
-                          Edit
-                        </NavLink>
-                        <NavLink
-                          to={`/admin-dashboard/employee/salary/${emp._id}`}
-                          href="#"
-                          className="font-medium bg-yellow-500 px-3 py-2 text-white rounded-lg hover:underline"
-                        >
-                          Salary
-                        </NavLink>
-                        <NavLink
-                          to={`/admin-dashboard/employee/leave/${emp._id}`}
-                          className="font-medium bg-orange-500 px-3 py-2 text-white rounded-lg hover:underline"
-                        >
-                          Leave
-                        </NavLink>
-                        <NavLink
-                          // to={`/admin-dashboard/employee/leave/${emp._id}`}
-                          className="font-medium bg-red-500 px-3 py-2 text-white rounded-lg hover:underline"
-                          onClick={() => {
-                            setSelectedEmpId(emp._id);
-                            setShowModal(true);
-                          }}
-                        >
-                          Delete
-                        </NavLink>
-                      </td>
-                    </tr>
-                  ))
-                  }
-                </tbody>
-              </table>
+              <table className="w-full text-sm text-left text-gray-700 shadow-md rounded-lg overflow-hidden">
+  <thead className="text-xs uppercase bg-gray-100 border-b">
+    <tr>
+      <th className="px-6 py-4 font-semibold">S No</th>
+      <th className="px-6 py-4 font-semibold">Image</th>
+      <th className="px-6 py-4 font-semibold">Name</th>
+      <th className="px-6 py-4 font-semibold">DOB</th>
+      <th className="px-6 py-4 font-semibold">Department</th>
+      <th className="px-6 py-4 font-semibold text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loading ? (
+      Array.from({ length: 6 }).map((_, index) => (
+        <tr key={index} className="border-t">
+          {[24, 16, 16, 20, 16].map((width, colIndex) => (
+            <td key={colIndex} className="py-4 px-6">
+              <div
+                className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+              ></div>
+            </td>
+          ))}
+        </tr>
+      ))
+    ) : (
+      empData?.map((emp, i) => (
+        <tr
+          key={i}
+          className="bg-white border-b hover:bg-gray-50 transition-all duration-200"
+        >
+          <td className="px-6 py-4 font-medium">{i + 1}</td>
+          <td className="px-6 py-4">
+            <img
+              src={`${url}/${emp.Img}`}
+              alt={emp.emp_name}
+              className="w-12 h-12 rounded-full object-cover border"
+            />
+          </td>
+          <td className="px-6 py-4">{emp.emp_name}</td>
+          <td className="px-6 py-4">
+            {emp.dob
+              ? new Date(emp.dob).toLocaleDateString("en-GB")
+              : ""}
+          </td>
+          <td className="px-6 py-4">{emp.Dept}</td>
+          <td className="px-6 py-4 flex gap-2 flex-wrap justify-center">
+            <button
+              onClick={() =>
+                navigate(`/admin-dashboard/employee/${emp._id}`)
+              }
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
+            >
+              View
+            </button>
+            <NavLink
+              to={`/admin-dashboard/employee/edit/${emp._id}`}
+              className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-md text-sm"
+            >
+              Edit
+            </NavLink>
+            <NavLink
+              to={`/admin-dashboard/employee/salary/${emp._id}`}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
+            >
+              Salary
+            </NavLink>
+            <NavLink
+              to={`/admin-dashboard/employee/leave/${emp._id}`}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-md text-sm"
+            >
+              Leave
+            </NavLink>
+            <button
+              onClick={() => {
+                setSelectedEmpId(emp._id);
+                setShowModal(true);
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
+
             </div>
           </div>
         </div>
@@ -212,7 +192,10 @@ const List = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
               <h2 className="text-xl font-semibold mb-2">Confirm Delete</h2>
-              <p className="text-sm text-gray-600 mb-4">Are you sure you want to delete this employee? This action cannot be undone.</p>
+              <p className="text-sm text-gray-600 mb-4">
+                Are you sure you want to delete this employee? This action
+                cannot be undone.
+              </p>
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowModal(false)}
@@ -232,9 +215,7 @@ const List = () => {
         )}
 
         {showToast && (
-          <div
-            className="fixed top-24 right-5 z-50 transition-transform duration-500 ease-out transform animate-slide-in"
-          >
+          <div className="fixed top-24 right-5 z-50 transition-transform duration-500 ease-out transform animate-slide-in">
             <div
               id="toast-success"
               className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
@@ -274,7 +255,6 @@ const List = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

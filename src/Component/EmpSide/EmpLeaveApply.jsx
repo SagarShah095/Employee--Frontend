@@ -3,12 +3,15 @@ import Navbar from "../Dashboard/Navbar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import axios from "axios";
 import { useAuth } from "../../Context/authContext";
-import { Loader } from "lucide-react";
+
+import TourManager from "../../shared/TourManager";
+import Loader from "../Loader";
+
 
 const LeaveAdd = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [empData, setEmpData] = useState(null); 
+  const [empData, setEmpData] = useState(null);
   const [leave, setLeave] = useState({
     emp_id: user?.emp_id || "",
     emp_name: user?.emp_name || "",
@@ -96,14 +99,23 @@ const LeaveAdd = () => {
     }
     setLoading(false);
   };
+  const steps = [
+    {
+      id: "page4-step",
+      text: "This is  Apply Leave Page, here you can Apply Your Leave . Click next to go to  Salary Page",
+      attachTo: { element: ".page4-next-btn", on: "bottom" },
+      nextRoute: "/employee/salary-history",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+      <TourManager steps={steps} pageKey="page7" />
+      {loading && <Loader />}
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <EmployeeSidebar />
         <div className="w-full bg-gray-100 min-h-screen p-8">
-          {loading && <Loader />}
           <h1 className="text-3xl font-semibold text-center mb-6">
             Apply Leaves
           </h1>
