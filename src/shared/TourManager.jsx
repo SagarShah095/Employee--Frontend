@@ -15,12 +15,13 @@ const TourManager = ({ steps = [], pageKey }) => {
     }
 
     const tour = new Shepherd.Tour({
-      defaultStepOptions: {
-        cancelIcon: { enabled: true },
-        classes: "shadow-md bg-purple-200",
-        scrollTo: { behavior: "smooth", block: "center" },
-      },
-    });
+  useModalOverlay: true, // ✅ Enables overlay
+  defaultStepOptions: {
+    cancelIcon: { enabled: true },
+    classes: "shadow-md bg-purple-200",
+    scrollTo: { behavior: "smooth", block: "center" },
+  },
+});
 
     const resetTour = () => {
       for (let i = 1; i <= 9; i++) {

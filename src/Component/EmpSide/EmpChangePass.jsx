@@ -123,7 +123,7 @@ const EmpChangePass = () => {
       <div className="flex">
         <EmployeeSidebar />
         <div className="flex-1 p-6">
-          <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+          <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg page5-next-btn">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
               Change Password
             </h2>

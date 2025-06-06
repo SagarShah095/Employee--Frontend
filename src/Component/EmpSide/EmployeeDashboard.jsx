@@ -133,7 +133,8 @@ const EmployeeDashboard = () => {
   ];
   return (
     <div className="min-h-screen bg-gray-100 ">
-      <TourManager steps={steps} pageKey="page1" />
+      {!loading && <TourManager steps={steps} pageKey="page1" />}
+
       <Navbar />
       <div className="flex ">
         <EmployeeSidebar />

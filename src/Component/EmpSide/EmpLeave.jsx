@@ -74,8 +74,8 @@ const EmpLeave = () => {
       <div className="flex flex-1 overflow-hidden">
         <EmployeeSidebar />
 
-        <main className="flex-1 p-10 bg-gradient-to-br from-white via-blue-50 to-blue-100">
-          <div className="backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl p-10 border border-gray-200">
+        <main className="flex-1 p-10 bg-gradient-to-br from-white via-blue-50 to-blue-100 ">
+          <div className="backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl p-10 border border-gray-200 page4-next-btn">
             <h1 className="text-4xl font-extrabold text-black mb-6">
               Employee Leave Portal
             </h1>

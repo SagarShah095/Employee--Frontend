@@ -106,14 +106,14 @@ function EmpNotifications() {
       <Navbar />
       <div className="flex flex-1">
         <EmployeeSidebar />
-        <div className="flex-1 p-8 overflow-y-auto">
+        <div className="flex-1 p-8 overflow-y-auto ">
           <button
             className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
             onClick={resetTour}
           >
             🔁 Reset Tour
           </button>
-          <div className="flex justify-between items-center gap-10">
+          <div className="flex justify-between items-center gap-10 ">
             <h2 className="text-2xl font-bold mb-4">🔔 Notifications</h2>
 
             <div className="flex items-center mb-4">
@@ -132,11 +132,11 @@ function EmpNotifications() {
           </div>
 
           {loading ? (
-   <Loader/>
+            <Loader />
           ) : notifications.length === 0 ? (
             <p className="text-gray-500 italic">No notifications available.</p>
           ) : (
-            <ul>
+            <ul className="page9-end-btn">
               {notifications.map((n, index) => (
                 <li
                   key={index}

@@ -33,7 +33,6 @@ const Project = () => {
     fetchProjects();
   }, []);
 
-  // Handle Delete Confirmation
   const confirmDelete = (id) => {
     setDeleteId(id);
     setShowModal(true);

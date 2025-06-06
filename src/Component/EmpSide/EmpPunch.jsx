@@ -211,7 +211,7 @@ const EmpPunch = () => {
         <div className="flex">
           <EmployeeSidebar />
           <div className="flex-1 p-8 ">
-            <div className="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
+            <div className="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto page3-next-btn">
               <h2 className="text-xl font-bold text-teal-600 mb-4">
                 Attendance
               </h2>
