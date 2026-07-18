@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 
 const SalaryView = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
   const [salary, setSalary] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +44,7 @@ const SalaryView = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
         <div className="m-10">
-      {loading && <Loader />}
+          {loading && <Loader />}
           <h1 className="text-2xl font-bold mb-6">Salary Records</h1>
 
           <div className="overflow-x-auto bg-white shadow-lg rounded-md">

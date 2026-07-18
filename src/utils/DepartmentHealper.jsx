@@ -27,12 +27,12 @@ export const DepartmentBtns = ({ _id, department, setDepartment }) => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `https://employee-backend-q7hn.onrender.com/api/department/${_id}`,
+        `http://localhost:4000/api/department/${_id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        } 
+        }
       );
 
       if (response.data.success) {
@@ -47,7 +47,7 @@ export const DepartmentBtns = ({ _id, department, setDepartment }) => {
       console.error(error);
       alert(
         error.response?.data?.error ||
-          "An error occurred while deleting the department"
+        "An error occurred while deleting the department"
       );
     }
     setLoading(false);

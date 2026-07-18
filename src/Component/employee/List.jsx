@@ -8,7 +8,7 @@ import Loader from "../Loader";
 const List = () => {
   const { id } = useParams();
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [empData, setEmpData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ const List = () => {
 
   return (
     <div className="relative">
-            {/* {loading && <Loader />} */}
+      {/* {loading && <Loader />} */}
       <div className="flex">
         <AdminSidebar />
         <div className="w-full bg-gray-100">
@@ -98,92 +98,117 @@ const List = () => {
           <div className="p-5">
             <div className="relative overflow-x-auto rounded-lg">
               <table className="w-full text-sm text-left text-gray-700 shadow-md rounded-lg overflow-hidden">
-  <thead className="text-xs uppercase bg-gray-100 border-b">
-    <tr>
-      <th className="px-6 py-4 font-semibold">S No</th>
-      <th className="px-6 py-4 font-semibold">Image</th>
-      <th className="px-6 py-4 font-semibold">Name</th>
-      <th className="px-6 py-4 font-semibold">DOB</th>
-      <th className="px-6 py-4 font-semibold">Department</th>
-      <th className="px-6 py-4 font-semibold text-center">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {loading ? (
-      Array.from({ length: 6 }).map((_, index) => (
-        <tr key={index} className="border-t">
-          {[24, 16, 16, 20, 16].map((width, colIndex) => (
-            <td key={colIndex} className="py-4 px-6">
-              <div
-                className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
-              ></div>
-            </td>
-          ))}
-        </tr>
-      ))
-    ) : (
-      empData?.map((emp, i) => (
-        <tr
-          key={i}
-          className="bg-white border-b hover:bg-gray-50 transition-all duration-200"
-        >
-          <td className="px-6 py-4 font-medium">{i + 1}</td>
-          <td className="px-6 py-4">
-            <img
-              src={`${url}/${emp.Img}`}
-              alt={emp.emp_name}
-              className="w-12 h-12 rounded-full object-cover border"
-            />
-          </td>
-          <td className="px-6 py-4">{emp.emp_name}</td>
-          <td className="px-6 py-4">
-            {emp.dob
-              ? new Date(emp.dob).toLocaleDateString("en-GB")
-              : ""}
-          </td>
-          <td className="px-6 py-4">{emp.Dept}</td>
-          <td className="px-6 py-4 flex gap-2 flex-wrap justify-center">
-            <button
-              onClick={() =>
-                navigate(`/admin-dashboard/employee/${emp._id}`)
-              }
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              View
-            </button>
-            <NavLink
-              to={`/admin-dashboard/employee/edit/${emp._id}`}
-              className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              Edit
-            </NavLink>
-            <NavLink
-              to={`/admin-dashboard/employee/salary/${emp._id}`}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              Salary
-            </NavLink>
-            <NavLink
-              to={`/admin-dashboard/employee/leave/${emp._id}`}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              Leave
-            </NavLink>
-            <button
-              onClick={() => {
-                setSelectedEmpId(emp._id);
-                setShowModal(true);
-              }}
-              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))
-    )}
-  </tbody>
-</table>
+                <thead className="text-xs uppercase bg-gray-100 border-b">
+                  <tr>
+                    <th className="px-6 py-4 font-semibold">S No</th>
+                    <th className="px-6 py-4 font-semibold">Image</th>
+                    <th className="px-6 py-4 font-semibold">Name</th>
+                    <th className="px-6 py-4 font-semibold">DOB</th>
+                    <th className="px-6 py-4 font-semibold">Department</th>
+                    <th className="px-6 py-4 font-semibold text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    Array.from({ length: 6 }).map((_, index) => (
+                      <tr key={index} className="border-t">
+                        {[24, 16, 16, 20, 16].map((width, colIndex) => (
+                          <td key={colIndex} className="py-4 px-6">
+                            <div
+                              className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+                            ></div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  ) : empData?.filter(
+                      (emp) =>
+                        emp.role !== "admin" &&
+                        emp.empRole !== "admin" &&
+                        emp.email !== "admin@gmail.com"
+                    ).length > 0 ? (
+                    empData
+                      ?.filter(
+                        (emp) =>
+                          emp.role !== "admin" &&
+                          emp.empRole !== "admin" &&
+                          emp.email !== "admin@gmail.com"
+                      )
+                      .map((emp, i) => (
+                        <tr
+                          key={i}
+                          className="bg-white border-b hover:bg-gray-50 transition-all duration-200"
+                        >
+                          <td className="px-6 py-4 font-medium">{i + 1}</td>
+                          <td className="px-6 py-4">
+                            <img
+                              src={
+                                emp.Img?.startsWith("http")
+                                  ? emp.Img
+                                  : `${url}/${emp.Img}`
+                              }
+                              alt={emp.emp_name}
+                              className="w-12 h-12 rounded-full object-cover border"
+                            />
+                          </td>
+                          <td className="px-6 py-4">{emp.emp_name}</td>
+                          <td className="px-6 py-4">
+                            {emp.dob
+                              ? new Date(emp.dob).toLocaleDateString("en-GB")
+                              : ""}
+                          </td>
+                          <td className="px-6 py-4">{emp.Dept}</td>
+                          <td className="px-6 py-4 flex gap-2 flex-wrap justify-center">
+                            <button
+                              onClick={() =>
+                                navigate(`/admin-dashboard/employee/${emp._id}`)
+                              }
+                              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
+                            >
+                              View
+                            </button>
+                            <NavLink
+                              to={`/admin-dashboard/employee/edit/${emp._id}`}
+                              className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-md text-sm"
+                            >
+                              Edit
+                            </NavLink>
+                            <NavLink
+                              to={`/admin-dashboard/employee/salary/${emp._id}`}
+                              className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
+                            >
+                              Salary
+                            </NavLink>
+                            <NavLink
+                              to={`/admin-dashboard/employee/leave/${emp._id}`}
+                              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-md text-sm"
+                            >
+                              Leave
+                            </NavLink>
+                            <button
+                              onClick={() => {
+                                setSelectedEmpId(emp._id);
+                                setShowModal(true);
+                              }}
+                              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="py-8 px-6 text-center text-gray-500 font-medium text-base"
+                      >
+                        No employees available.
+                      </td>
+                    </tr>
+                  )}}
+                </tbody>
+              </table>
 
             </div>
           </div>

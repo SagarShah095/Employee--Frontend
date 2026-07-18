@@ -16,7 +16,7 @@ const LeaveDetails = () => {
     setLoading(true)
     try {
       const response = await axios.get(
-        `https://employee-backend-q7hn.onrender.com/api/leave/${id}`,
+        `http://localhost:4000/api/leave/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,7 +28,7 @@ const LeaveDetails = () => {
       } else {
         alert("Failed to fetch leave data. Please try again.");
       }
-    setLoading(false)
+      setLoading(false)
 
     } catch (error) {
       console.error("Error fetching leave data:", error);
@@ -50,7 +50,7 @@ const LeaveDetails = () => {
             <Navbar />
           </div>
           <div className="max-w-xl mx-auto mt-8 px-4">
-      {loading && <Loader/>}
+            {loading && <Loader />}
             <div>
               <h3 className="text-3xl font-bold text-center text-teal-700 mb-6">
                 Leave Details
@@ -88,13 +88,12 @@ const LeaveDetails = () => {
                   <div className="flex justify-between">
                     <span className="font-semibold">Status:</span>
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        leaveData.status === "Approved"
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${leaveData.status === "Approved"
                           ? "bg-green-100 text-green-700"
                           : leaveData.status === "Rejected"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {leaveData.status}
                     </span>

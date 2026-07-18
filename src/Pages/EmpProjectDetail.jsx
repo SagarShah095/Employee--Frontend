@@ -17,7 +17,7 @@ const EmployeeProjectDetail = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`https://employee-backend-q7hn.onrender.com/api/projects`, {
+      .get(`http://localhost:4000/api/projects`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => {
@@ -107,13 +107,12 @@ const EmployeeProjectDetail = () => {
                     <p className="mb-1">
                       <strong>Status:</strong>{" "}
                       <span
-                        className={`inline-block px-2 py-1 rounded text-white ${
-                          project.status === "Completed"
+                        className={`inline-block px-2 py-1 rounded text-white ${project.status === "Completed"
                             ? "bg-green-600"
                             : project.status === "In Progress"
-                            ? "bg-yellow-500"
-                            : "bg-blue-500"
-                        }`}
+                              ? "bg-yellow-500"
+                              : "bg-blue-500"
+                          }`}
                       >
                         {project.status}
                       </span>
@@ -126,9 +125,8 @@ const EmployeeProjectDetail = () => {
                     {/* Optional: Progress Bar */}
                     <div className="w-full bg-gray-200 rounded-full h-2.5 my-3">
                       <div
-                        className={`h-2.5 rounded-full ${
-                          progress === 100 ? "bg-green-500" : "bg-blue-500"
-                        }`}
+                        className={`h-2.5 rounded-full ${progress === 100 ? "bg-green-500" : "bg-blue-500"
+                          }`}
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>

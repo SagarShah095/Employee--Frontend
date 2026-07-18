@@ -8,7 +8,7 @@ import TourManager from "../../shared/TourManager";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
   const [employeeData, setEmployeeData] = useState({});
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(false);

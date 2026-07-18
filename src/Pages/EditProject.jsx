@@ -19,7 +19,7 @@ const EditProject = () => {
     technologies: [],
     assignedEmployees: [],
   });
-  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
+  const url = "http://localhost:4000/api/projects";
 
   useEffect(() => {
     axios
@@ -67,7 +67,7 @@ const EditProject = () => {
   const [employees, setEmployees] = useState([]);
   useEffect(() => {
     axios
-      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("http://localhost:4000/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -96,7 +96,7 @@ const EditProject = () => {
         <div className="flex justify-center p-8">
           <div className="w-full max-w-2xl bg-white rounded-lg shadow-md  p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">
-               Edit Project
+              Edit Project
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

@@ -9,7 +9,7 @@ import Loader from "../Loader";
 
 const EmpProfile = () => {
   const { user } = useAuth();
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [selectedEmp, setSelectedEmp] = useState(null);
   const [loading, setLoading] = useState(true); // start with loading true
@@ -60,7 +60,9 @@ const EmpProfile = () => {
               <img
                 src={
                   selectedEmp?.Img
-                    ? `${url}/${selectedEmp.Img}`
+                    ? selectedEmp.Img.startsWith("http")
+                      ? selectedEmp.Img
+                      : `${url}/${selectedEmp.Img}`
                     : "https://via.placeholder.com/150"
                 }
                 alt="profile"

@@ -14,7 +14,7 @@ const EmployeeSingleProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`https://employee-backend-q7hn.onrender.com/api/projects/${id}`, {
+      .get(`http://localhost:4000/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => setProject(data))
@@ -23,7 +23,7 @@ const EmployeeSingleProjectDetail = () => {
 
   useEffect(() => {
     axios
-      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("http://localhost:4000/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -83,13 +83,12 @@ const EmployeeSingleProjectDetail = () => {
                 <p className="text-lg">
                   <span className="font-semibold">📈 Status:</span>{" "}
                   <span
-                    className={`inline-block px-2 py-1 rounded text-white ${
-                      project.status === "Completed"
+                    className={`inline-block px-2 py-1 rounded text-white ${project.status === "Completed"
                         ? "bg-green-600"
                         : project.status === "In Progress"
-                        ? "bg-yellow-500"
-                        : "bg-blue-500"
-                    }`}
+                          ? "bg-yellow-500"
+                          : "bg-blue-500"
+                      }`}
                   >
                     {project.status}
                   </span>
@@ -112,9 +111,8 @@ const EmployeeSingleProjectDetail = () => {
                   <p className="text-sm text-gray-600 mb-1">Progress</p>
                   <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
-                      className={`h-3 rounded-full ${
-                        progress === 100 ? "bg-green-500" : "bg-blue-600"
-                      }`}
+                      className={`h-3 rounded-full ${progress === 100 ? "bg-green-500" : "bg-blue-600"
+                        }`}
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -144,7 +142,7 @@ const EmployeeSingleProjectDetail = () => {
                         className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg shadow hover:shadow-md transition"
                       >
                         <img
-                          src={`https://employee-backend-q7hn.onrender.com/${emp.Img}`}
+                          src={`http://localhost:4000/${emp.Img}`}
                           alt={emp.emp_name}
                           className="w-12 h-12 rounded-full object-cover border"
                         />

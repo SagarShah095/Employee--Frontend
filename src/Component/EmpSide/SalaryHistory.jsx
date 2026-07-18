@@ -8,7 +8,7 @@ import TourManager from "../../shared/TourManager";
 import Loader from "../Loader";
 
 const SalaryHistory = () => {
-  const URL = "https://employee-backend-q7hn.onrender.com";
+  const URL = "http://localhost:4000";
   const { user } = useAuth();
   const [salaryHistory, setSalaryHistory] = useState([]);
   const [loading, setLoading] = useState(false);

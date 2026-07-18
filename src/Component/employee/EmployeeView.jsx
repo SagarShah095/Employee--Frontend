@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import * as XLSX from "xlsx";
 const EmployeeView = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [selectedemp, setSelectedEmp] = useState({});
   const { id } = useParams();
@@ -113,9 +113,8 @@ const EmployeeView = () => {
 
     const hours = Math.floor(diffMs / (1000 * 60 * 60));
     const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours} hr${hours !== 1 ? "s" : ""} ${minutes} min${
-      minutes !== 1 ? "s" : ""
-    }`;
+    return `${hours} hr${hours !== 1 ? "s" : ""} ${minutes} min${minutes !== 1 ? "s" : ""
+      }`;
   };
 
   const formatDateTime = (value) => {
@@ -141,9 +140,8 @@ const EmployeeView = () => {
     PunchOut: formatDateTime(row.PunchOut) || "-",
     TotalTime: getTotalTime(row.PunchIn, row.PunchOut) || "-",
     Status: row.status || "-",
-    Notes: `${row.isLate ? "Late " : ""}${
-      row.isEarly ? "| Early Leave" : "-"
-    }`.trim(),
+    Notes: `${row.isLate ? "Late " : ""}${row.isEarly ? "| Early Leave" : "-"
+      }`.trim(),
   }));
 
   const handleExcelExport = () => {
@@ -183,7 +181,11 @@ const EmployeeView = () => {
               <div className="gap-10 mt-10 justify-center items-center flex">
                 <div>
                   <img
-                    src={`${url}/${selectedemp.Img}`}
+                    src={
+                      selectedemp.Img?.startsWith("http")
+                        ? selectedemp.Img
+                        : `${url}/${selectedemp.Img}`
+                    }
                     alt=""
                     className="rounded-full w-56 h-56 object-cover mb-4"
                   />
@@ -305,9 +307,8 @@ const EmployeeView = () => {
                   matchData?.map((item, index) => (
                     <tr
                       key={index}
-                      className={`text-center text-gray-700 text-base ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                      } hover:bg-gray-200 transition-colors duration-200`}
+                      className={`text-center text-gray-700 text-base ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        } hover:bg-gray-200 transition-colors duration-200`}
                     >
                       <td className="py-3 px-6 border-b border-gray-200">
                         {item.PunchIn

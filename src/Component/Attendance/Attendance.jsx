@@ -46,9 +46,8 @@ const getTotalTime = (inTime, outTime) => {
 
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-  return `${hours} hr${hours !== 1 ? "s" : ""} ${minutes} min${
-    minutes !== 1 ? "s" : ""
-  }`;
+  return `${hours} hr${hours !== 1 ? "s" : ""} ${minutes} min${minutes !== 1 ? "s" : ""
+    }`;
 };
 
 const getTotalHours = (inTime, outTime) => {
@@ -85,7 +84,7 @@ const Attendance = () => {
   const [currentEdit, setCurrentEdit] = useState(null); // object of row being edited or null
   const [showUser, setShowUser] = useState({});
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -186,9 +185,8 @@ const Attendance = () => {
     PunchOut: formatDateTime(row.PunchOut),
     TotalTime: getTotalTime(row.PunchIn, row.PunchOut),
     // Status: row.status,
-    Notes: `${row.isLate ? "Late " : ""}${
-      row.isEarly ? "| Early Leave" : ""
-    }`.trim(),
+    Notes: `${row.isLate ? "Late " : ""}${row.isEarly ? "| Early Leave" : ""
+      }`.trim(),
   }));
 
   const handleExcelExport = () => {
@@ -293,7 +291,7 @@ const Attendance = () => {
   return (
     <div className="flex">
       <AdminSidebar />
-          {/* {loading && <Loader />} */}
+      {/* {loading && <Loader />} */}
       <div className="w-full bg-gray-100 min-h-screen">
         <Navbar />
         <div className="p-6">
@@ -373,26 +371,26 @@ const Attendance = () => {
               <tbody>
                 {loading
                   ? Array.from({ length: 6 }).map((_, index) => (
-                      <tr key={index} className="border-t">
-                        {[24, 16, 16, 20].map((width, colIndex) => (
-                          <td key={colIndex} className="py-4 px-4">
-                            <div
-                              className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
-                            ></div>
-                          </td>
-                        ))}
-                      </tr>
-                    ))
-                  : filteredData.length === 0 && (
-                      <tr>
-                        <td
-                          colSpan={8}
-                          className="text-center text-gray-500 px-4 py-6"
-                        >
-                          No data found.
+                    <tr key={index} className="border-t">
+                      {[24, 16, 16, 20].map((width, colIndex) => (
+                        <td key={colIndex} className="py-4 px-4">
+                          <div
+                            className={`h-4 bg-gray-300 rounded w-${width} animate-pulse`}
+                          ></div>
                         </td>
-                      </tr>
-                    )}
+                      ))}
+                    </tr>
+                  ))
+                  : filteredData.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        className="text-center text-gray-500 px-4 py-6"
+                      >
+                        No data found.
+                      </td>
+                    </tr>
+                  )}
                 {filteredData.map((row) => (
                   <tr
                     key={row.emp_id}
@@ -406,17 +404,15 @@ const Attendance = () => {
                       {row.emp_name}
                     </td>
                     <td
-                      className={`border border-gray-300 px-4 py-2 ${
-                        row.isLate ? "text-red-600 font-semibold" : ""
-                      }`}
+                      className={`border border-gray-300 px-4 py-2 ${row.isLate ? "text-red-600 font-semibold" : ""
+                        }`}
                       title={row.isLate ? "Late Punch In" : ""}
                     >
                       {formatDateTime(row.PunchIn)}
                     </td>
                     <td
-                      className={`border border-gray-300 px-4 py-2 ${
-                        row.isEarly ? "text-red-600 font-semibold" : ""
-                      }`}
+                      className={`border border-gray-300 px-4 py-2 ${row.isEarly ? "text-red-600 font-semibold" : ""
+                        }`}
                       title={row.isEarly ? "Early Punch Out" : ""}
                     >
                       {formatDateTime(row.PunchOut)}

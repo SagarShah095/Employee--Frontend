@@ -6,7 +6,7 @@ import AdminSidebar from "../Component/Dashboard/AdminSidebar";
 import Select from "react-select";
 
 const AddProject = () => {
-  const url = "https://employee-backend-q7hn.onrender.com/api/projects";
+  const url = "http://localhost:4000/api/projects";
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const AddProject = () => {
 
   useEffect(() => {
     axios
-      .get("https://employee-backend-q7hn.onrender.com/api/employee", {
+      .get("http://localhost:4000/api/employee", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEmployees(res.data?.Emp))
@@ -72,92 +72,123 @@ const AddProject = () => {
               Create New Project
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                name="title"
-                placeholder="Title"
-                value={form.title}
-                onChange={handleChange}
-                required
-                className="w-full border rounded p-2"
-              />
-              <textarea
-                name="description"
-                placeholder="Description"
-                value={form.description}
-                onChange={handleChange}
-                required
-                className="w-full border rounded p-2"
-              />
-              <select
-                name="status"
-                value={form.status}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              >
-                <option value="Planned">Planned</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-              </select>
-              <div className="flex gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Project Title
+                </label>
                 <input
-                  name="startDate"
-                  type="date"
-                  value={form.startDate}
+                  name="title"
+                  placeholder="Enter project title"
+                  value={form.title}
                   onChange={handleChange}
                   required
-                  className="w-full border rounded p-2"
-                />
-                <input
-                  name="endDate"
-                  type="date"
-                  value={form.endDate}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded p-2"
+                  className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
-              <input
-                name="technologies"
-                placeholder="Technologies (comma-separated)"
-                value={form.technologies}
-                onChange={handleChange}
-                required
-                className="w-full border rounded p-2"
-              />
-              {/* <select
-                multiple
-                name="assignedEmployees"
-                value={form.assignedEmployees}
-                onChange={handleEmployeesChange}
-                className="w-full border rounded p-2"
-              >
-                {employees.map((emp) => (
-                  <option key={emp._id} value={emp._id}>
-                    {emp.emp_name}
-                  </option>
-                ))}
-              </select> */}
-              <Select
-                name="assignedEmployees"
-                closeMenuOnSelect={false}
-                options={employeeOptions}
-                value={employeeOptions.filter((option) =>
-                  form.assignedEmployees.includes(option.value)
-                )}
-                onChange={(selectedOptions) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    assignedEmployees: selectedOptions.map(
-                      (option) => option.value
-                    ),
-                  }))
-                }
-                defaultValue={""}
-                isMulti
-              />
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  placeholder="Enter project description"
+                  value={form.description}
+                  onChange={handleChange}
+                  required
+                  rows={3}
+                  className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  value={form.status}
+                  onChange={handleChange}
+                  className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                >
+                  <option value="Planned">Planned</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Start Date
+                  </label>
+                  <input
+                    name="startDate"
+                    type="date"
+                    value={form.startDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full border rounded p-2 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    End Date
+                  </label>
+                  <input
+                    name="endDate"
+                    type="date"
+                    value={form.endDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full border rounded p-2 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Technologies
+                </label>
+                <input
+                  name="technologies"
+                  placeholder="Technologies (comma-separated, e.g. React, Node, MongoDB)"
+                  value={form.technologies}
+                  onChange={handleChange}
+                  required
+                  className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Assign Employees
+                </label>
+                <Select
+                  name="assignedEmployees"
+                  closeMenuOnSelect={false}
+                  options={employeeOptions}
+                  noOptionsMessage={() => "No employees available"}
+                  value={employeeOptions.filter((option) =>
+                    form.assignedEmployees.includes(option.value)
+                  )}
+                  onChange={(selectedOptions) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      assignedEmployees: selectedOptions
+                        ? selectedOptions.map((option) => option.value)
+                        : [],
+                    }))
+                  }
+                  defaultValue={""}
+                  isMulti
+                  placeholder="Select employees to assign..."
+                />
+              </div>
+
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                className="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-md hover:bg-blue-700 transition duration-200 mt-2"
               >
                 Create Project
               </button>

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import TourManager from "../shared/TourManager";
 import Loader from "../Component/Loader";
 
-const socket = io("https://employee-backend-q7hn.onrender.com");
+const socket = io("http://localhost:4000");
 
 function EmpNotifications() {
   const { user } = useAuth();
@@ -22,7 +22,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.get(
-        `https://employee-backend-q7hn.onrender.com/api/notifications/${userId}`
+        `http://localhost:4000/api/notifications/${userId}`
       );
       setNotifications(res.data);
     } catch (err) {
@@ -36,7 +36,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.get(
-        `https://employee-backend-q7hn.onrender.com/api/notifications/unread-count/${userId}`
+        `http://localhost:4000/api/notifications/unread-count/${userId}`
       );
       setUnreadCount(res.data.count);
     } catch (err) {
@@ -48,7 +48,7 @@ function EmpNotifications() {
     if (!userId) return;
     try {
       const res = await axios.put(
-        `https://employee-backend-q7hn.onrender.com/api/notifications/mark-all-read/${userId}`
+        `http://localhost:4000/api/notifications/mark-all-read/${userId}`
       );
       console.log(res.data);
       await fetchNotifications();
@@ -140,16 +140,15 @@ function EmpNotifications() {
               {notifications.map((n, index) => (
                 <li
                   key={index}
-                  className={`border-b p-3 my-2 rounded ${
-                    !n.read ? "font-[800]" : "font-[500]"
-                  }`}
+                  className={`border-b p-3 my-2 rounded ${!n.read ? "font-[800]" : "font-[500]"
+                    }`}
                 >
                   <div
                     className=" cursor-pointer inline-block"
                     onClick={async () => {
                       try {
                         await axios.put(
-                          `https://employee-backend-q7hn.onrender.com/api/notifications/mark-read/${n._id}`
+                          `http://localhost:4000/api/notifications/mark-read/${n._id}`
                         );
                         setNotifications((prev) =>
                           prev.map((item) =>

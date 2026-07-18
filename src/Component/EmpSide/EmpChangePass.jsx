@@ -9,7 +9,7 @@ import Loader from "../Loader";
 
 const EmpChangePass = () => {
   const { user } = useAuth();
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [selectedEmp, setSelectedEmp] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -117,7 +117,7 @@ const EmpChangePass = () => {
   ];
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <TourManager steps={steps} pageKey="page5" />
       <Navbar />
       <div className="flex">
@@ -128,15 +128,14 @@ const EmpChangePass = () => {
               Change Password
             </h2>
 
-         
+
 
             {message && (
               <div
-                className={`text-center mb-4 text-sm ${
-                  message.includes("successfully")
+                className={`text-center mb-4 text-sm ${message.includes("successfully")
                     ? "text-green-600"
                     : "text-red-500"
-                }`}
+                  }`}
               >
                 {message}
               </div>

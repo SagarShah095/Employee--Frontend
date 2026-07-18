@@ -9,6 +9,7 @@ import DeleteConfirmationModal from "../shared/DeleteConfirmation";
 import "react-toastify/dist/ReactToastify.css";
 
 const Project = () => {
+  const url = "http://localhost:4000";
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -18,8 +19,11 @@ const Project = () => {
   // Fetch Projects
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/projects`);
-      setProjects(data.data);
+      const token = localStorage.getItem("token");
+      const { data } = await axios.get(`${url}/api/projects`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProjects(data?.data || []);
       console.log(data?.data, "Fetched Projects");
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -40,7 +44,10 @@ const Project = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${url}/api/projects/${deleteId}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`${url}/api/projects/${deleteId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Project deleted successfully");
       fetchProjects();
     } catch (error) {

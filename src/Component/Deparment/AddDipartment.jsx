@@ -6,7 +6,7 @@ import axios from "axios";
 import Loader from "../Loader";
 
 const AddDipartment = () => {
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +62,7 @@ const AddDipartment = () => {
           </div>
           {/* add */}
           <div className="max-w-md mx-auto mt-36 p-6 bg-white shadow-md  rounded-lg">
-      {loading && <Loader />}
+            {loading && <Loader />}
             <div>
               <h3 className="text-2xl  font-semibold text-black mb-6">
                 Add New Department

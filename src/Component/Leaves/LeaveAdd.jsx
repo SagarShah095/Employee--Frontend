@@ -17,7 +17,7 @@ const LeaveAdd = () => {
 
   const [redAlert, setRedAlert] = useState(false);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const LeaveAdd = () => {
     if (leave.toDate > leave.fromDate) {
       try {
         const response = await axios.post(
-          "https://employee-backend-q7hn.onrender.com/api/leave/add",
+          "http://localhost:4000/api/leave/add",
           {
             empId: leave.empId,
             emp_name: leave.emp_name,
@@ -102,7 +102,7 @@ const LeaveAdd = () => {
             <Navbar />
           </div>
           <div>
-      {loading && <Loader/>}
+            {loading && <Loader />}
             <div className="flex justify-center items-center mt-4">
               <h1 className="font-semibold text-xl">Apply Leaves</h1>
             </div>
@@ -190,9 +190,8 @@ const LeaveAdd = () => {
                       </select>
                     </div>
                     <div
-                      className={`text-red-400 ${
-                        redAlert ? "block" : "hidden"
-                      }`}
+                      className={`text-red-400 ${redAlert ? "block" : "hidden"
+                        }`}
                     >
                       Please check the Date
                     </div>
@@ -214,9 +213,8 @@ const LeaveAdd = () => {
                     </div>
 
                     <div
-                      className={`text-red-400 ${
-                        redAlert ? "block" : "hidden"
-                      }`}
+                      className={`text-red-400 ${redAlert ? "block" : "hidden"
+                        }`}
                     >
                       Please check the Date
                     </div>

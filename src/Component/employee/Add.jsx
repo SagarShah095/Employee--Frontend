@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Add = ({ addEmp, setAddEmp }) => {
   const [loading, setLoading] = useState(false);
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
   const navigate = useNavigate();
 
   const fieldLabels = {
@@ -115,7 +115,7 @@ const Add = ({ addEmp, setAddEmp }) => {
             <Navbar />
           </div>
           <div className="p-10">
-      {loading && <Loader />}
+            {loading && <Loader />}
             <div className="w-full p-6 bg-white shadow-md  rounded-lg">
               <h1 className="text-2xl font-bold">Add New Employee</h1>
               <form onSubmit={handleSubmit}>

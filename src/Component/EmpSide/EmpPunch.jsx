@@ -18,7 +18,7 @@ const EmpPunch = () => {
   const [lunchInTime, setLunchInTime] = useState(null);
   const [lunchOutTime, setLunchOutTime] = useState(null);
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -221,8 +221,8 @@ const EmpPunch = () => {
                 {isPunchedIn && !hasPunchedOut
                   ? "Present (Punched In)"
                   : hasPunchedOut
-                  ? "Completed"
-                  : "Not Punched In"}
+                    ? "Completed"
+                    : "Not Punched In"}
               </p>
 
               <p className="text-gray-500 mb-4">

@@ -7,7 +7,7 @@ import Loader from "../Loader";
 
 const Edit = () => {
 
-  const url = "https://employee-backend-q7hn.onrender.com";
+  const url = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
 
@@ -95,7 +95,7 @@ const Edit = () => {
             <Navbar />
           </div>
           <div className=" m-10 p-5 rounded-md shadow-lg bg-white">
-      {loading && <Loader />}
+            {loading && <Loader />}
             <form onSubmit={handleSubmit}>
               <div>
                 <h1 className="text-2xl font-bold">Edit Employee</h1>

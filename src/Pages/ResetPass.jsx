@@ -16,7 +16,7 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        `https://employee-backend-q7hn.onrender.com/api/auth/reset-password/${token}`,
+        `http://localhost:4000/api/auth/reset-password/${token}`,
         {
           newPassword: password,
         }
